@@ -1,27 +1,24 @@
-# Étape 1 : build Astro en image node
+# Étape 1 : build du site Astro
 FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copier package.json et installer les dépendances
+# Installer les dépendances
 COPY package*.json ./
 RUN npm install
 
-# Copier le reste des fichiers et build le site
+# Copier tout le reste du code et construire le site
 COPY . .
 RUN npm run build
 
-# Étape 2 : image finale minimale avec Nginx
-FROM nginx:alpine
+# Étape finale : image minimale contenant uniquement le site généré
+FROM alpine:latest
 
-# Copier les fichiers Astro statiques vers Nginx
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Installer un outil pour servir statiquement si nécessaire
+RUN apk add --no-cache curl
 
-# Supprimer la configuration par défaut et en créer une propre
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d
+# Copier les fichiers buildés
+COPY --from=builder /app/dist /site
 
-# Exposer le port standard web
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+# Point d’entrée neutre : c’est Coolify qui sert /site
+CMD ["echo", "Build Astro terminé. Les fichiers sont disponibles dans /site"]
