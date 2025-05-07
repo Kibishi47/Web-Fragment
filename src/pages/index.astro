@@ -3,9 +3,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.svelte';
 import Features from '../components/Features.svelte';
 import Footer from '../components/Footer.svelte';
+import Guy from '../components/Guy.svelte';
 ---
+
 <BaseLayout>
-  <Hero title="Nom du Jeu" subtitle="Prépare-toi à sauver l'univers" />
-  <Features />
-  <Footer />
+  <!-- <Hero title="Nom du Jeu" subtitle="Prépare-toi à sauver l'univers" /> -->
+  <!-- <Features /> -->
+  <!-- <Footer /> -->
+  <Guy client:load/>
 </BaseLayout>
