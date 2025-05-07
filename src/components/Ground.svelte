@@ -2,73 +2,38 @@
     import { onMount } from 'svelte';
     import { gsap } from 'gsap';
     import { ScrollTrigger } from 'gsap/ScrollTrigger';
-    import { CustomEase } from 'gsap/CustomEase';
     
     let carre;
     let sol;
-    let monde;
-    let initialAnimationComplete = false;
-    let impactAnimationDone = false;
+    let fragmentsContainer;
     
-    // Paramètre configurable
-    const transitionPoint = 0.3;
+    // Points de déclenchement du défilement
+    const impactPoint = 0.25; // Quand le carré touche le sol
+    const breakPoint = 0.3;   // Quand le sol se casse
     
-    // Créer les données des fragments avec plus de variété
-    const fragmentCount = 15; // Plus de fragments
-    const fragments = Array.from({ length: fragmentCount }, (_, i) => {
-      // Déterminer si c'est un gros fragment (25% de chance)
-      const isLarge = Math.random() < 0.25;
-      // Déterminer si le fragment passe devant le carré (30% de chance)
-      const isInFront = Math.random() < 0.3;
-      // Déterminer la vitesse de parallax (entre 0.7 et 1.3)
-      const parallaxFactor = 0.7 + Math.random() * 0.6;
-      
-      return {
-        width: isLarge ? Math.random() * 50 + 30 : Math.random() * 30 + 15,
-        height: isLarge ? Math.random() * 30 + 15 : Math.random() * 15 + 5,
-        // Dispersion plus large pour les gros fragments
-        xOffset: (Math.random() - 0.5) * (isLarge ? 700 : 500),
-        // Certains fragments vont vers le haut, surtout les petits
-        yOffset: (Math.random() > 0.3 || isLarge) 
-                ? Math.random() * (isLarge ? 300 : 200) + 50 
-                : -Math.random() * 200 - 50,
-        rotation: Math.random() * 1080 - 540, // Rotation plus ample
-        // Trajectoire fixe pour éviter les tremblements
-        finalX: 0,
-        finalY: 0,
-        finalRotation: 0,
-        // Effet de parallax
-        parallaxFactor: parallaxFactor,
-        // Z-index
-        zIndex: isInFront ? 15 : 5,
-        // Couleur légèrement variée
-        color: isLarge ? '#222' : '#333'
-      };
-    });
+    // Créer les données des fragments
+    const fragmentCount = 15;
+    const fragments = Array.from({ length: fragmentCount }, () => ({
+      width: Math.random() < 0.25 ? Math.random() * 50 + 30 : Math.random() * 30 + 15,
+      height: Math.random() < 0.25 ? Math.random() * 30 + 15 : Math.random() * 15 + 5,
+      xOffset: (Math.random() - 0.5) * 600,
+      yOffset: Math.random() > 0.3 ? Math.random() * 300 + 50 : -Math.random() * 200 - 50,
+      rotation: Math.random() * 720 - 360,
+      zIndex: Math.random() < 0.3 ? 15 : 5,
+      color: Math.random() < 0.25 ? '#222' : '#333'
+    }));
     
     onMount(() => {
-      // Enregistrer les plugins
-      gsap.registerPlugin(ScrollTrigger, CustomEase);
+      // Enregistrer le plugin ScrollTrigger
+      gsap.registerPlugin(ScrollTrigger);
       
-      // Position initiale du monde
-      gsap.set(monde, { y: 0 });
-      
-      // Position initiale du carré
+      // Initialiser les éléments
       gsap.set(carre, { 
-        y: -100,
-        left: "50%",
-        xPercent: -50
+        opacity: 1,
+        y: -window.innerHeight * 0.7 // Positionné très haut mais déjà visible
       });
       
-      // Position initiale du sol
-      gsap.set(sol, {
-        y: window.innerHeight - 50,
-        left: "50%",
-        xPercent: -50,
-        opacity: 1
-      });
-      
-      // Cacher les fragments initialement
+      // Initialiser les fragments
       gsap.set(".fragment", { 
         opacity: 0,
         x: 0,
@@ -76,185 +41,134 @@
         rotation: 0
       });
       
-      // Animation initiale - le carré tombe jusqu'au sol
-      gsap.to(carre, {
-        // Position exacte pour toucher le sol
-        y: window.innerHeight - 150,
-        duration: 2,
-        ease: CustomEase.create("custom", "M0,0 C0.012,0 0.687,0.252 0.868,0.541 0.984,0.726 0.954,0.707 1,1 "),
-        delay: 0.5,
-        onComplete: () => {
-          initialAnimationComplete = true;
-          // Déclencher l'animation d'impact
-          animateImpact();
+      // Fonction pour mettre à jour la position des fragments
+      function updateFragmentsPosition() {
+        if (sol) {
+          const solRect = sol.getBoundingClientRect();
+          gsap.set(fragmentsContainer, {
+            top: solRect.top,
+            left: solRect.left,
+            width: solRect.width,
+            height: solRect.height
+          });
         }
-      });
-      
-      function animateImpact() {
-        // Faire disparaître le sol
-        gsap.to(sol, {
-          opacity: 0,
-          duration: 0.3
-        });
-        
-        // Précalculer les positions finales pour chaque fragment
-        fragments.forEach((fragment, index) => {
-          // Calculer une seule fois les positions finales pour éviter les tremblements
-          fragment.finalX = fragment.xOffset;
-          fragment.finalY = fragment.yOffset;
-          fragment.finalRotation = fragment.rotation;
-          
-          const el = document.getElementById(`fragment-${index}`);
-          
-          // Faire apparaître
-          gsap.to(el, {
-            opacity: 1,
-            duration: 0.1
-          });
-          
-          // Projeter avec plus d'énergie - durée variable selon la taille
-          const duration = fragment.width > 30 ? 1.5 : 1.2;
-          
-          gsap.to(el, {
-            x: fragment.finalX,
-            y: fragment.finalY,
-            rotation: fragment.finalRotation,
-            duration: duration,
-            ease: "power2.out"
-          });
-        });
-        
-        // Continuer la chute du carré après l'impact
-        gsap.to(carre, {
-          y: window.innerHeight,
-          duration: 1,
-          ease: "power3.in",
-          onComplete: () => {
-            impactAnimationDone = true;
-          }
-        });
       }
       
-      // Hauteur totale de défilement
-      const scrollHeight = document.querySelector('.scroll-container').offsetHeight;
-      // Hauteur de la fenêtre
-      const windowHeight = window.innerHeight;
+      // Mettre à jour la position des fragments au défilement
+      window.addEventListener('scroll', updateFragmentsPosition);
       
-      // Animation au scroll - le monde remonte avec effet de parallax
+      // Animation au scroll
       ScrollTrigger.create({
-        trigger: ".scroll-container",
+        trigger: "body",
         start: "top top",
         end: "bottom bottom",
         scrub: 1,
-        markers: true,
         onUpdate: (self) => {
-          if (!impactAnimationDone) return;
-          
           const scrollProgress = self.progress;
-          const maxScrollDistance = scrollHeight - windowHeight;
           
-          if (scrollProgress < transitionPoint) {
-            // Première phase: le monde remonte normalement
-            const scrollAmount = maxScrollDistance * scrollProgress;
+          // Mettre à jour la position des fragments
+          updateFragmentsPosition();
+          
+          // Phase 1: Le carré descend vers le sol
+          if (scrollProgress <= impactPoint) {
+            // Animation du carré qui descend de très haut
+            const startY = -window.innerHeight * 0.7;
+            const solRect = sol ? sol.getBoundingClientRect() : { top: window.innerHeight - 50 };
+            const endY = solRect.top - 100; // Position du sol moins la hauteur du carré
+            const carreY = startY + (scrollProgress / impactPoint) * (endY - startY);
             
-            // Le monde remonte à vitesse normale
-            gsap.set(monde, { y: -scrollAmount });
+            gsap.set(carre, { y: carreY });
             
-            // Les fragments ont un effet de parallax
-            fragments.forEach((fragment, index) => {
-              const el = document.getElementById(`fragment-${index}`);
-              
-              // Appliquer l'effet de parallax - certains fragments remontent plus vite/lentement
-              const parallaxOffset = scrollAmount * (fragment.parallaxFactor - 1);
-              
-              gsap.set(el, {
-                y: fragment.finalY - parallaxOffset
-              });
-            });
+            // Sol visible
+            if (sol) sol.style.opacity = 1;
             
-          } else {
-            // Seconde phase: le monde continue de remonter, mais le carré tombe
-            const scrollAmount = maxScrollDistance * transitionPoint;
-            gsap.set(monde, { y: -scrollAmount });
+            // Fragments invisibles
+            gsap.set(".fragment", { opacity: 0 });
+          }
+          // Phase 2: Le carré touche le sol mais le sol n'est pas encore cassé
+          else if (scrollProgress <= breakPoint) {
+            // Le carré s'enfonce légèrement dans le sol
+            const solRect = sol ? sol.getBoundingClientRect() : { top: window.innerHeight - 50 };
+            const progress = (scrollProgress - impactPoint) / (breakPoint - impactPoint);
+            const carreY = solRect.top - 100 + progress * 20; // Enfoncement léger
             
-            // Chute exponentielle du carré
-            const fallProgress = (scrollProgress - transitionPoint) / (1 - transitionPoint);
-            const easeProgress = gsap.parseEase("power4.in")(fallProgress);
-            const startY = window.innerHeight; // Position après l'impact
-            const endY = startY + 600; // Position finale de la chute
-            const currentY = gsap.utils.interpolate(startY, endY, easeProgress);
+            gsap.set(carre, { y: carreY });
             
-            gsap.set(carre, { y: currentY });
+            // Sol visible
+            if (sol) sol.style.opacity = 1;
             
-            // Les fragments continuent aussi de tomber - avec effet de parallax
-            fragments.forEach((fragment, index) => {
-              const el = document.getElementById(`fragment-${index}`);
-              
-              // Position au point de transition avec parallax
-              const parallaxOffset = scrollAmount * (fragment.parallaxFactor - 1);
-              const startFragY = fragment.finalY - parallaxOffset;
-              
-              // Distance de chute variable selon la taille
-              const fallDistance = fragment.width > 30 ? 700 : 500;
-              const endFragY = startFragY + fallDistance;
-              
-              // Calculer la position actuelle
-              const currentFragY = gsap.utils.interpolate(startFragY, endFragY, easeProgress);
-              
-              // Appliquer la position
-              gsap.set(el, {
-                y: currentFragY
-              });
+            // Fragments invisibles
+            gsap.set(".fragment", { opacity: 0 });
+          }
+          // Phase 3: Le sol se casse, les fragments apparaissent, le carré continue de descendre
+          else {
+            // Le carré continue de descendre jusqu'au bas de la page
+            const solRect = sol ? sol.getBoundingClientRect() : { top: window.innerHeight - 50 };
+            const progress = (scrollProgress - breakPoint) / (1 - breakPoint);
+            
+            // Calculer la position finale pour que le carré soit complètement en bas de la page
+            const finalY = window.innerHeight; // Position du bas de la page
+            const startY = solRect.top - 80; // Position après l'impact
+            const carreY = startY + progress * (finalY - startY);
+            
+            gsap.set(carre, { y: carreY });
+            
+            // Sol invisible progressivement
+            // if (sol) sol.style.opacity = 1 - progress;
+            if (sol) sol.style.opacity = 1 - progress*10;
+            
+            // Fragments visibles avec dispersion
+            gsap.set(".fragment", { 
+              opacity: 1,
+              x: (i) => fragments[i].xOffset * progress,
+              y: (i) => fragments[i].yOffset * progress,
+              rotation: (i) => fragments[i].rotation * progress
             });
           }
         }
       });
+      
+      // Nettoyage lors de la destruction du composant
+      return () => {
+        window.removeEventListener('scroll', updateFragmentsPosition);
+      };
     });
   </script>
   
-  <div class="scroll-container">
-    <div class="fixed-container">
-      <!-- Le monde qui contient tout -->
-      <div bind:this={monde} class="monde">
-        <!-- Le carré qui tombe -->
-        <div bind:this={carre} class="carre"></div>
-        
-        <!-- Le sol qui se brise -->
-        <div bind:this={sol} class="sol"></div>
-        
-        <!-- Les fragments -->
-        <div class="fragments-container">
-          {#each fragments as fragment, i}
-            <div id={`fragment-${i}`} class="fragment" 
-                 style="width: {fragment.width}px; height: {fragment.height}px; z-index: {fragment.zIndex}; background-color: {fragment.color};">
-            </div>
-          {/each}
+  <!-- Éléments fixes qui se superposent -->
+  <div class="animation-overlay">
+    <!-- Le carré qui tombe -->
+    <div bind:this={carre} class="carre"></div>
+    
+    <!-- Les fragments -->
+    <div bind:this={fragmentsContainer} class="fragments-container">
+      {#each fragments as fragment, i}
+        <div class="fragment" 
+             style="width: {fragment.width}px; height: {fragment.height}px; z-index: {fragment.zIndex}; background-color: {fragment.color};">
         </div>
-      </div>
+      {/each}
     </div>
+  </div>
+  
+  <!-- Composant d'animation avec le sol qui défile -->
+  <div class="animation-component">
+    <!-- Le sol qui défile avec la page mais se superpose aux autres éléments -->
+    <div bind:this={sol} class="sol"></div>
+    
+    <!-- Espace pour le défilement -->
     <div class="scroll-space"></div>
   </div>
   
   <style>
-    .scroll-container {
-      position: relative;
-      width: 100%;
-      height: 300vh;
-    }
-    
-    .fixed-container {
+    /* Conteneur d'animation qui se superpose à tout */
+    .animation-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100vh;
-      overflow: hidden;
-    }
-    
-    .monde {
-      position: relative;
-      width: 100%;
-      height: 200vh;
+      z-index: 1000; /* Valeur élevée pour être au-dessus de tout */
+      pointer-events: none; /* Permet de cliquer à travers */
     }
     
     .carre {
@@ -262,36 +176,49 @@
       width: 100px;
       height: 100px;
       background-color: #3498db;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
       z-index: 10;
     }
     
-    .sol {
-      position: absolute;
-      width: 300px;
-      height: 20px;
-      background-color: #333;
-      z-index: 5;
-    }
-    
     .fragments-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      position: fixed;
+      /* Les dimensions et la position seront définies dynamiquement par GSAP */
     }
     
     .fragment {
       position: absolute;
       transform-origin: center center;
       border-radius: 2px;
-      top: calc(100vh - 50px); /* Position initiale au niveau du sol */
-      left: 50%; /* Centré horizontalement */
-      transform: translateX(-50%); /* Ajustement pour le centrage */
+      opacity: 0;
+      /* Positionnement initial au centre exact du conteneur */
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
     }
     
+    /* Composant d'animation avec le sol */
+    .animation-component {
+      position: relative;
+      width: 100%;
+      z-index: 500; /* Au-dessus du contenu normal mais sous l'animation fixe */
+      margin-top: -75vh; /* Positionne le sol plus haut sur la page */
+    }
+    
+    /* Le sol qui défile avec la page */
+    .sol {
+      width: 300px;
+      height: 20px;
+      background-color: #333;
+      margin: 0 auto;
+      position: relative;
+      z-index: 500; /* Même z-index que le composant parent */
+    }
+    
+    /* Espace pour le défilement */
     .scroll-space {
-      height: 100%;
+      height: 200vh; /* Espace supplémentaire pour le défilement */
     }
   </style>
   
