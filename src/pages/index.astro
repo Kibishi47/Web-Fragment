@@ -1,16 +1,21 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.svelte';
 import Features from '../components/Features.svelte';
 import Footer from '../components/Footer.svelte';
-import Guy from '../components/Guy.svelte';
 import Ground from '../components/Ground.svelte';
+import Hero from '../components/Hero.svelte';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Parallax from '../components/Parallax.svelte';
+import '../styles/global.css';
 ---
 
 <BaseLayout>
-  <Hero title="Nom du Jeu" subtitle="Prépare-toi à sauver l'univers" />
-  <Features />
+  <!-- <Hero title="Nom du Jeu" subtitle="Prépare-toi à sauver l'univers" /> -->
+  <Parallax client:load>
+    MA PARALLAX
+  </Parallax>
+    
+    <Features />
+    <Ground client:load/>
   <!-- <Guy client:load/> -->
-  <Ground client:load/>
   <Footer />
 </BaseLayout>

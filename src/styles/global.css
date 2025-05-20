@@ -5,16 +5,23 @@ body {
     color: white;
     text-align: center;
   }
-  .hero {
+.hero {
     padding: 4rem 1rem;
-  }
-  .hero img {
+}
+.hero img {
     max-width: 200px;
-  }
-  .hero h1 {
+}
+.hero h1 {
     font-size: 2.5rem;
-  }
-  .hero p {
+}
+.hero p {
     font-size: 1.2rem;
     color: #ccc;
-  }
+}
+
+@font-face {
+  font-family: 'Tomarik';
+  src: url('../assets/fonts/Tomarik-Poster.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}

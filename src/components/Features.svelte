@@ -1,10 +1,7 @@
 <section id="features">
-    <h2>Fonctionnalités Clés</h2>
-    <ul>
-      <li>Exploration de galaxies</li>
-      <li>Combats stratégiques en temps réel</li>
-      <li>Personnalisation avancée des vaisseaux</li>
-    </ul>
+    <div class="content-1">
+        Salut
+    </div>
     <p>1</p>
     <p>2</p>
     <p>3</p>
@@ -35,4 +32,17 @@
     <p>28</p>
     <p>29</p>
     <p>30</p>
-  </section>
+</section>
+
+<style>
+
+h2 {
+    font-family: 'Tomarik';
+    color: red;
+}
+
+.content-1 {
+    height: 100vh;
+    background-color: gray;
+}
+</style>
