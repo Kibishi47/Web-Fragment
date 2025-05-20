@@ -5,17 +5,17 @@ import Ground from '../components/Ground.svelte';
 import Hero from '../components/Hero.svelte';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Parallax from '../components/Parallax.svelte';
+import Description from '../components/Description.svelte';
 import '../styles/global.css';
 ---
 
 <BaseLayout>
   <!-- <Hero title="Nom du Jeu" subtitle="Prépare-toi à sauver l'univers" /> -->
-  <Parallax client:load>
-    MA PARALLAX
-  </Parallax>
+  <Parallax client:load/>
     
     <Features />
     <Ground client:load/>
+    <Description />
   <!-- <Guy client:load/> -->
   <Footer />
 </BaseLayout>

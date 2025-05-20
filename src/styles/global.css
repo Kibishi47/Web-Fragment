@@ -4,7 +4,15 @@ body {
     background: black;
     color: white;
     text-align: center;
-  }
+}
+
+#scroll-container {
+  height: 100vh;
+  overflow-y: scroll;
+  max-height: 100vh;
+  scroll-behavior: auto;
+}
+
 .hero {
     padding: 4rem 1rem;
 }

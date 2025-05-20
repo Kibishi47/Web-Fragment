@@ -24,9 +24,9 @@
     const commonTrigger = {
       trigger: "body",
       start: "top top", 
-      end: "+=1000vh", // Animation sur 500vh de défilement
+      end: "+=1000vh",
       scrub: true,
-      markers: false // Désactiver en production
+      markers: true // Désactiver en production
     };
 
     // Panneau décoratif 1 (arrière-plan, le plus lent)
