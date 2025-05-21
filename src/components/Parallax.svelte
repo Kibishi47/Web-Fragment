@@ -1,7 +1,7 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
   import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 
   let decorPanel1, decorPanel2, mainPanel;
 

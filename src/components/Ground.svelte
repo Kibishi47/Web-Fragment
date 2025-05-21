@@ -1,8 +1,8 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
   import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  import Lenis from '@studio-freight/lenis';
+  import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+  import Lenis from 'lenis';
   import {
     VIEW_H_VH, SOL_OFFSET_VH, IMPACT_POINT, BREAK_POINT, FRAGMENT_COUNT, createFragments
   } from './constants.js';
