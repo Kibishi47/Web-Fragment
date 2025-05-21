@@ -94,6 +94,7 @@
     overflow: hidden;
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
+    transition: height 0.3s ease;
 }
 
 .section-title {
@@ -105,6 +106,7 @@
     color: var(--foreground);
     position: relative;
     z-index: 1;
+    transition: font-size 0.3s ease;
 }
 
 /* Nouvelles sections parentes */
@@ -113,6 +115,7 @@
     display: flex;
     position: relative;
     box-sizing: border-box;
+    transition: all 0.3s ease;
 }
 
 .top-section {
@@ -140,7 +143,7 @@
     justify-content: flex-start;
     border: 1px solid var(--border);
     box-shadow: 0 10px 30px var(--shadow);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, width 0.3s ease, padding 0.3s ease;
     margin: 0 2vw;
 }
 
@@ -162,6 +165,7 @@ h2 {
     align-items: center;
     margin-bottom: 1.5rem;
     color: var(--foreground);
+    transition: font-size 0.3s ease;
 }
 
 .icon-wrapper {
@@ -174,17 +178,20 @@ h2 {
     opacity: 0.2;
     border-radius: 8px;
     margin-right: 12px;
+    transition: width 0.3s ease, height 0.3s ease;
 }
 
 .icon {
     width: 24px;
     height: 24px;
     color: var(--accent);
+    transition: width 0.3s ease, height 0.3s ease;
 }
 
 p {
     margin-bottom: 1.5rem;
     color: var(--muted);
+    transition: font-size 0.3s ease;
 }
 
 ul, ol {
@@ -198,6 +205,7 @@ li {
     align-items: flex-start;
     margin-bottom: 0.8rem;
     color: var(--foreground);
+    transition: font-size 0.3s ease;
 }
 
 .list-icon {
@@ -218,6 +226,7 @@ li {
     margin-right: 10px;
     font-weight: bold;
     color: var(--accent);
+    transition: width 0.3s ease, height 0.3s ease;
 }
 
 .features-footer {
@@ -252,23 +261,70 @@ li {
     width: 20px;
     height: 20px;
     margin-left: 8px;
+    transition: width 0.3s ease, height 0.3s ease;
 }
 
+/* Tablette */
+@media (max-width: 1024px) {
+    .col {
+        width: clamp(16rem, 45vw, 28rem);
+        padding: 1.75rem;
+    }
+    
+    .section-title {
+        font-size: 2.2rem;
+    }
+    
+    .icon-wrapper {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .icon {
+        width: 22px;
+        height: 22px;
+    }
+    
+    .cta-button {
+        font-size: 1rem;
+        padding: 0.7em 1.6em;
+    }
+    
+    .arrow-icon {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* Mobile */
 @media (max-width: 900px) {
+    .content-1 {
+        height: auto;
+        max-height: none;
+        padding: 2rem 0;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+    }
+    
     .parent-section {
-        height: auto !important; /* Ignorer les hauteurs en pourcentage sur mobile */
+        height: auto !important;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem 0;
     }
     
     .top-section, .bottom-section {
-        justify-content: center;
-        align-items: center;
-        padding: 2vh 0;
+        padding: 1vh 0;
     }
     
     .col {
         width: 90%;
         max-width: 100%;
         margin: 0 0 1.5rem 0;
+        padding: 1.5rem;
     }
     
     .left, .right {
@@ -276,9 +332,90 @@ li {
         margin-right: auto;
     }
     
-    .content-1 {
-        height: auto;
-        max-height: none;
+    h2 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+    
+    .icon-wrapper {
+        width: 32px;
+        height: 32px;
+        margin-right: 10px;
+    }
+    
+    .icon {
+        width: 18px;
+        height: 18px;
+    }
+    
+    p {
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+    }
+    
+    li {
+        font-size: 0.95rem;
+        margin-bottom: 0.6rem;
+    }
+    
+    .number {
+        width: 22px;
+        height: 22px;
+    }
+    
+    .cta-button {
+        font-size: 0.95rem;
+        padding: 0.6em 1.4em;
+    }
+    
+    .arrow-icon {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+/* Petit mobile */
+@media (max-width: 480px) {
+    .section-title {
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+    }
+    
+    .col {
+        padding: 1.25rem;
+    }
+    
+    h2 {
+        font-size: 1.2rem;
+    }
+    
+    .icon-wrapper {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .icon {
+        width: 16px;
+        height: 16px;
+    }
+    
+    p, li {
+        font-size: 0.9rem;
+    }
+    
+    .number {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .cta-button {
+        font-size: 0.9rem;
+        padding: 0.5em 1.2em;
+    }
+    
+    .arrow-icon {
+        width: 14px;
+        height: 14px;
     }
 }
 </style>

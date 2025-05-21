@@ -15,10 +15,15 @@ import {
     createFragments
 } from './constants.js';
 
-
 let carre, sol, fragmentsContainer;
 let lenis;
 const fragments = createFragments(FRAGMENT_COUNT);
+let isMobile = false;
+
+function checkMobile() {
+    isMobile = window.innerWidth <= 768;
+    return isMobile;
+}
 
 function setFragmentsContainerPosition() {
     if (!sol || !fragmentsContainer) return;
@@ -37,9 +42,19 @@ function getScrollHeight() {
 
 function animateScroll({ getViewHeight }) {
     gsap.registerPlugin(ScrollTrigger);
+    
+    // Ajuster les dimensions en fonction de la taille de l'écran
+    const mobileScale = isMobile ? 0.7 : 1;
+    const squareWidth = SQUARE_WIDTH * mobileScale;
+    const squareHeight = SQUARE_HEIGHT * mobileScale;
+    const solHeight = SOL_HEIGHT * mobileScale;
+    
+    // Mettre à jour les dimensions des éléments
+    gsap.set(carre, { width: squareWidth, height: squareHeight });
+    gsap.set(sol, { height: solHeight });
 
     // Initial positions
-    gsap.set(carre, { opacity: 1, y: -SQUARE_HEIGHT });
+    gsap.set(carre, { opacity: 1, y: -squareHeight });
     gsap.set(".fragment", { opacity: 0, x: 0, y: 0, rotation: 0, scale: 1 });
     gsap.set(sol, { x: 0 });
 
@@ -49,9 +64,8 @@ function animateScroll({ getViewHeight }) {
             trigger: "body",
             start: "top top",
             end: "bottom bottom",
-            scrub: 1,
+            scrub: isMobile ? 0.5 : 1, // Scrub plus rapide sur mobile
             markers: false,
-            // id: "ground",
             onUpdate: () => {
                 setFragmentsContainerPosition();
 
@@ -61,8 +75,8 @@ function animateScroll({ getViewHeight }) {
 
                 // PHASE 1 : descente (ease out)
                 if (prog <= IMPACT_POINT) {
-                    const startY = -SQUARE_HEIGHT;
-                    const endY = solTop - SQUARE_HEIGHT;
+                    const startY = -squareHeight;
+                    const endY = solTop - squareHeight;
                     const t = prog / IMPACT_POINT;
                     const eased = gsap.parseEase("power2.out")(t);
                     const y = startY + eased * (endY - startY);
@@ -75,28 +89,21 @@ function animateScroll({ getViewHeight }) {
                 else if (prog <= BREAK_POINT) {
                     const t = (prog - IMPACT_POINT) / (BREAK_POINT - IMPACT_POINT);
                     const eased = gsap.parseEase("elastic.out(1, 0.5)")(t);
-                    const y = solTop - SQUARE_HEIGHT + eased * 20;
+                    const y = solTop - squareHeight + eased * (20 * mobileScale);
                     gsap.set(carre, { y });
                     sol.style.opacity = 1;
                     gsap.set(".fragment", { opacity: 0 });
-                    gsap.set(sol, { y: eased * 6 });
+                    gsap.set(sol, { y: eased * (6 * mobileScale) });
                 }
                 // PHASE 3 : cassure/dispersion
                 else {
                     const t = (prog - BREAK_POINT) / (1 - BREAK_POINT);
                     const eased = gsap.parseEase("power2.in")(t);
-                    const startY = solTop - SQUARE_HEIGHT + 20;
+                    const startY = solTop - squareHeight + (20 * mobileScale);
                     const finalY = viewHeight;
                     const y = startY + eased * (finalY - startY);
                     gsap.set(carre, { y });
                     sol.style.opacity = Math.max(0, 1 - eased * 200);
-
-                    // Sol vibre horizontalement au début de la cassure
-                    /* const shake = t < 0.2 ? Math.sin(t * 30) * (1 - t / 0.2) * 10 : 0;
-                    gsap.set(sol, { x: shake, y: 0 }); */
-
-                    // const shake = t < 0.01 ? Math.sin(t * 500) * (1 - t / 0.01) * 30 : 0;
-                    // gsap.set(sol, { x: shake, y: 0 });
 
                     // Fragments : delay progressif pour chaque fragment
                     gsap.set(".fragment", {
@@ -104,12 +111,16 @@ function animateScroll({ getViewHeight }) {
                         x: i => {
                             const delay = i / fragments.length * 0.2;
                             const localT = Math.max(0, (t - delay) / (1 - delay));
-                            return fragments[i].xOffset * localT;
+                            // Réduire la dispersion sur mobile
+                            const dispersionFactor = isMobile ? 0.7 : 1;
+                            return fragments[i].xOffset * localT * dispersionFactor;
                         },
                         y: i => {
                             const delay = i / fragments.length * 0.2;
                             const localT = Math.max(0, (t - delay) / (1 - delay));
-                            return fragments[i].yOffset * localT;
+                            // Réduire la dispersion sur mobile
+                            const dispersionFactor = isMobile ? 0.7 : 1;
+                            return fragments[i].yOffset * localT * dispersionFactor;
                         },
                         rotation: i => {
                             const delay = i / fragments.length * 0.2;
@@ -129,22 +140,35 @@ function animateScroll({ getViewHeight }) {
 }
 
 onMount(() => {
+    checkMobile();
     let scrollHeight = getScrollHeight();
+    
     function updateScrollHeight() {
         scrollHeight = getScrollHeight();
     }
-    window.addEventListener('resize', updateScrollHeight);
+    
+    function handleResize() {
+        checkMobile();
+        updateScrollHeight();
+        setFragmentsContainerPosition();
+        
+        // Réinitialiser l'animation lors du redimensionnement
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        animateScroll({ getViewHeight: () => scrollHeight });
+    }
+    
+    window.addEventListener('resize', handleResize);
 
-    // Init Lenis
+    // Init Lenis avec des paramètres adaptés aux mobiles
     lenis = new Lenis({
-        duration: 1.2,
+        duration: isMobile ? 0.8 : 1.2, // Plus court sur mobile
         easing: t => Math.min(1, 1.001 - 2 ** (-10 * t)),
         direction: 'vertical',
         gestureDirection: 'vertical',
         smooth: true,
         mouseMultiplier: 1,
-        smoothTouch: false,
-        touchMultiplier: 2,
+        smoothTouch: true, // Activer le défilement fluide sur tactile
+        touchMultiplier: isMobile ? 1.5 : 2, // Ajuster pour mobile
         infinite: false
     });
 
@@ -158,14 +182,12 @@ onMount(() => {
 
     setFragmentsContainerPosition();
     window.addEventListener('scroll', setFragmentsContainerPosition);
-    window.addEventListener('resize', setFragmentsContainerPosition);
 
     animateScroll({ getViewHeight: () => scrollHeight });
 
     onDestroy(() => {
         window.removeEventListener('scroll', setFragmentsContainerPosition);
-        window.removeEventListener('resize', setFragmentsContainerPosition);
-        window.removeEventListener('resize', updateScrollHeight);
+        window.removeEventListener('resize', handleResize);
         lenis?.destroy();
         ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     });
@@ -176,7 +198,6 @@ onMount(() => {
     <div
         bind:this={carre}
         class="carre"
-        style="width: {SQUARE_WIDTH}px; height: {SQUARE_HEIGHT}px;"
         ></div>
     <div bind:this={fragmentsContainer} class="fragments-container">
         {#each fragments as fragment, i}
@@ -197,7 +218,7 @@ onMount(() => {
     class="animation-component"
     style="margin-top: {SOL_OFFSET_VH}vh;"
     >
-    <div bind:this={sol} class="sol" style="height: {SOL_HEIGHT}px;"></div>
+    <div bind:this={sol} class="sol"></div>
     <div class="scroll-space"></div>
 </div>
 
@@ -221,6 +242,7 @@ onMount(() => {
     top: 0;
     transform: translateX(-50%);
     z-index: 10;
+    transition: width 0.3s ease, height 0.3s ease;
 }
 
 .fragments-container {
@@ -245,11 +267,12 @@ onMount(() => {
 
 .sol {
     width: 300px;
-    /* height: 20px;  <-- Retiré, géré en JS */
+    height: 20px;
     background: #333;
     margin: 0 auto;
     position: relative;
     z-index: 500;
+    transition: width 0.3s ease, height 0.3s ease;
 }
 
 .scroll-space {
@@ -274,5 +297,26 @@ html.lenis {
 
 .lenis.lenis-scrolling iframe {
     pointer-events: none;
+}
+
+/* Tablette */
+@media (max-width: 1024px) {
+    .sol {
+        width: 250px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .sol {
+        width: 200px;
+    }
+}
+
+/* Petit mobile */
+@media (max-width: 480px) {
+    .sol {
+        width: 180px;
+    }
 }
 </style>

@@ -2,14 +2,23 @@
   import { onMount, onDestroy } from 'svelte';
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+  import cloudUrl from '../assets/images/clouds.png';
 
   let decorPanel1, decorPanel2, mainPanel;
+  let isMobile = false;
 
   // Couleur et opacité pour les panneaux décoratifs
   const decorPanelColor = '#1B0B3E';
   const decorPanelOpacity = 0.5;
 
+  function checkMobile() {
+    isMobile = window.innerWidth <= 768;
+    return isMobile;
+  }
+
   onMount(() => {
+    checkMobile();
+    
     if (!decorPanel1 || !decorPanel2 || !mainPanel) {
       console.error("ERREUR: Panneaux non référencés.");
       return;
@@ -20,64 +29,86 @@
     // Tous les panneaux commencent en bas
     gsap.set([decorPanel1, decorPanel2, mainPanel], { y: '100vh' });
 
-    // Trigger commun
-    const commonTrigger = {
-      trigger: "body",
-      start: "top top", 
-      end: "+=1000vh",
-      scrub: true,
-      markers: false,
-      // id: "parallax",
+    function setupParallax() {
+      // Nettoyer les animations existantes
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      
+      // Ajuster les valeurs de parallaxe en fonction de la taille de l'écran
+      const mobileFactor = isMobile ? 0.6 : 1;
+      
+      // Trigger commun
+      const commonTrigger = {
+        trigger: "body",
+        start: "top top", 
+        end: isMobile ? "+=700vh" : "+=1000vh", // Réduire la distance sur mobile
+        scrub: isMobile ? 0.5 : true, // Scrub plus rapide sur mobile
+        markers: false,
+      };
+
+      // Panneau décoratif 1 (arrière-plan, commence plus haut)
+      gsap.fromTo(decorPanel1, 
+        { y: `${90 * mobileFactor}vh` }, // Position de départ plus haute
+        {
+          y: `${-90 * mobileFactor}vh`, // Position finale
+          ease: 'none',
+          scrollTrigger: { ...commonTrigger }
+        }
+      );
+
+      // Panneau décoratif 2 (position intermédiaire)
+      gsap.fromTo(decorPanel2, 
+        { y: `${180 * mobileFactor}vh` }, // Position de départ intermédiaire
+        {
+          y: `${-90 * mobileFactor}vh`, // Position finale
+          ease: 'none',
+          scrollTrigger: { ...commonTrigger }
+        }
+      );
+
+      // Panneau principal avec texte (commence plus bas)
+      gsap.fromTo(mainPanel, 
+        { y: `${360 * mobileFactor}vh` }, // Position de départ standard
+        {
+          y: `${-90 * mobileFactor}vh`, // Position finale
+          ease: 'none',
+          scrollTrigger: { ...commonTrigger }
+        }
+      );
+    }
+    
+    setupParallax();
+    
+    // Réinitialiser le parallaxe lors du redimensionnement
+    const handleResize = () => {
+      const wasMobile = isMobile;
+      checkMobile();
+      
+      // Seulement réinitialiser si le statut mobile a changé
+      if (wasMobile !== isMobile) {
+        setupParallax();
+      }
     };
-
-    // Panneau décoratif 1 (arrière-plan, le plus lent)
-    // Panneau décoratif 1 (arrière-plan, commence plus haut)
-    gsap.fromTo(decorPanel1, 
-      { y: '90vh' }, // Position de départ plus haute
-      {
-        y: '-90vh', // Position finale
-        ease: 'none',
-        scrollTrigger: { ...commonTrigger }
-      }
-    );
-
-    // Panneau décoratif 2 (position intermédiaire)
-    gsap.fromTo(decorPanel2, 
-      { y: '180vh' }, // Position de départ intermédiaire
-      {
-        y: '-90vh', // Position finale
-        ease: 'none',
-        scrollTrigger: { ...commonTrigger }
-      }
-    );
-
-    // Panneau principal avec texte (commence plus bas)
-    gsap.fromTo(mainPanel, 
-      { y: '360vh' }, // Position de départ standard
-      {
-        y: '-90vh', // Position finale
-        ease: 'none',
-        scrollTrigger: { ...commonTrigger }
-      }
-    );
-  });
-
-  onDestroy(() => {
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    
+    window.addEventListener('resize', handleResize);
+    
+    onDestroy(() => {
+      window.removeEventListener('resize', handleResize);
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    });
   });
 </script>
-
-<!-- Espace pour permettre le défilement -->
-<!-- <div class="scroll-enabler" style="height: 600vh; position: relative; z-index: 10;"> -->
-  <!-- 100vh (pour la page visible) + 500vh (pour le 'end' de scrollTrigger) -->
-<!-- </div> -->
 
 <!-- Conteneur fixe pour les panneaux de parallaxe -->
 <div class="parallax-container">
     <!-- Panneau décoratif 1 (arrière-plan) -->
     <div bind:this={decorPanel1} 
         class="parallax-panel" 
-        style="background-color: blue; z-index: 1;">
+        style="
+          background-image: url({cloudUrl}) !important;
+          background-size: cover;
+          background-position: center;
+          opacity: 1;
+          z-index: 1;">
     </div>
     
     <!-- Panneau décoratif 2 -->
@@ -123,11 +154,33 @@
     justify-content: center;
     align-items: center;
     will-change: transform;
+    transition: height 0.3s ease;
   }
   
   .main-panel {
     /* Le panneau principal peut avoir des styles différents */
     pointer-events: auto; /* Permet l'interaction avec le contenu */
     background-color: transparent; /* Transparent pour voir les panneaux décoratifs */
+  }
+  
+  /* Tablette */
+  @media (max-width: 1024px) {
+    .parallax-panel {
+      height: 85vh;
+    }
+  }
+  
+  /* Mobile */
+  @media (max-width: 768px) {
+    .parallax-panel {
+      height: 80vh;
+    }
+  }
+  
+  /* Petit mobile */
+  @media (max-width: 480px) {
+    .parallax-panel {
+      height: 75vh;
+    }
   }
 </style>
