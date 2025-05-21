@@ -26,8 +26,8 @@
       start: "top top", 
       end: "+=1000vh",
       scrub: true,
-      markers: true,
-      id: "parallax",
+      markers: false,
+      // id: "parallax",
     };
 
     // Panneau décoratif 1 (arrière-plan, le plus lent)

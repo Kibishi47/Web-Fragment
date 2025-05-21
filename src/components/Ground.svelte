@@ -51,7 +51,7 @@ function animateScroll({ getViewHeight }) {
             end: "bottom bottom",
             scrub: 1,
             markers: false,
-            id: "ground",
+            // id: "ground",
             onUpdate: () => {
                 setFragmentsContainerPosition();
 
