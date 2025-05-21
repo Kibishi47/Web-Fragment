@@ -1,14 +1,7 @@
 <script>
-import {
-    onMount,
-    onDestroy
-} from 'svelte';
-import {
-    gsap
-} from 'gsap';
-import {
-    ScrollTrigger
-} from 'gsap/dist/ScrollTrigger';
+import { onMount, onDestroy } from 'svelte';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import Lenis from 'lenis';
 import {
     VIEW_H_VH,
@@ -18,12 +11,13 @@ import {
     FRAGMENT_COUNT,
     SQUARE_HEIGHT,
     SQUARE_WIDTH,
+    SOL_HEIGHT,
     createFragments
 } from './constants.js';
 
+
 let carre, sol, fragmentsContainer;
 let lenis;
-
 const fragments = createFragments(FRAGMENT_COUNT);
 
 function setFragmentsContainerPosition() {
@@ -37,66 +31,109 @@ function setFragmentsContainerPosition() {
     });
 }
 
-function animateScroll({
-    viewHeight
-}) {
+function getScrollHeight() {
+    return document.documentElement.scrollHeight - window.innerHeight;
+}
+
+function animateScroll({ getViewHeight }) {
     gsap.registerPlugin(ScrollTrigger);
 
-    ScrollTrigger.create({
-        trigger: "body",
-        start: "top top",
-        end: "bottom bottom",
-        markers: true,
-        id: "ground",
-        scrub: 1,
-        onUpdate: self => {
-            const prog = self.progress;
-            setFragmentsContainerPosition();
+    // Initial positions
+    gsap.set(carre, { opacity: 1, y: -SQUARE_HEIGHT });
+    gsap.set(".fragment", { opacity: 0, x: 0, y: 0, rotation: 0, scale: 1 });
+    gsap.set(sol, { x: 0 });
 
-            if (prog <= IMPACT_POINT) {
-                const startY = -SQUARE_HEIGHT;
-                const endY = sol.getBoundingClientRect().top - SQUARE_HEIGHT;
-                const y = startY + (prog / IMPACT_POINT) * (endY - startY);
-                gsap.set(carre, {
-                    y
-                });
-                sol.style.opacity = 1;
-                gsap.set(".fragment", {
-                    opacity: 0
-                });
-            } else if (prog <= BREAK_POINT) {
-                const p = (prog - IMPACT_POINT) / (BREAK_POINT - IMPACT_POINT);
-                const y = sol.getBoundingClientRect().top - SQUARE_HEIGHT + p * 20;
-                gsap.set(carre, {
-                    y
-                });
-                sol.style.opacity = 1;
-                gsap.set(".fragment", {
-                    opacity: 0
-                });
-            } else {
-                const p = (prog - BREAK_POINT) / (1 - BREAK_POINT);
-                const startY = sol.getBoundingClientRect().top - SQUARE_HEIGHT + 20;
-                const finalY = viewHeight;
-                const y = startY + p * (finalY - startY);
-                gsap.set(carre, {
-                    y
-                });
-                sol.style.opacity = Math.max(0, 1 - p * 10);
-                gsap.set(".fragment", {
-                    opacity: 1,
-                    x: i => fragments[i].xOffset * p,
-                    y: i => fragments[i].yOffset * p,
-                    rotation: i => fragments[i].rotation * p,
-                    scale: 1 - p * 0.3
-                });
+    // Timeline juste pour la synchro scroll
+    const tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: "body",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1,
+            markers: false,
+            id: "ground",
+            onUpdate: () => {
+                setFragmentsContainerPosition();
+
+                const prog = tl.scrollTrigger.progress;
+                const solTop = sol.getBoundingClientRect().top;
+                const viewHeight = getViewHeight();
+
+                // PHASE 1 : descente (ease out)
+                if (prog <= IMPACT_POINT) {
+                    const startY = -SQUARE_HEIGHT;
+                    const endY = solTop - SQUARE_HEIGHT;
+                    const t = prog / IMPACT_POINT;
+                    const eased = gsap.parseEase("power2.out")(t);
+                    const y = startY + eased * (endY - startY);
+                    gsap.set(carre, { y });
+                    sol.style.opacity = 1;
+                    gsap.set(".fragment", { opacity: 0 });
+                    gsap.set(sol, { x: 0 });
+                }
+                // PHASE 2 : enfoncement (rebond)
+                else if (prog <= BREAK_POINT) {
+                    const t = (prog - IMPACT_POINT) / (BREAK_POINT - IMPACT_POINT);
+                    const eased = gsap.parseEase("elastic.out(1, 0.5)")(t);
+                    const y = solTop - SQUARE_HEIGHT + eased * 20;
+                    gsap.set(carre, { y });
+                    sol.style.opacity = 1;
+                    gsap.set(".fragment", { opacity: 0 });
+                    gsap.set(sol, { y: eased * 6 });
+                }
+                // PHASE 3 : cassure/dispersion
+                else {
+                    const t = (prog - BREAK_POINT) / (1 - BREAK_POINT);
+                    const eased = gsap.parseEase("power2.in")(t);
+                    const startY = solTop - SQUARE_HEIGHT + 20;
+                    const finalY = viewHeight;
+                    const y = startY + eased * (finalY - startY);
+                    gsap.set(carre, { y });
+                    sol.style.opacity = Math.max(0, 1 - eased * 200);
+
+                    // Sol vibre horizontalement au début de la cassure
+                    /* const shake = t < 0.2 ? Math.sin(t * 30) * (1 - t / 0.2) * 10 : 0;
+                    gsap.set(sol, { x: shake, y: 0 }); */
+
+                    // const shake = t < 0.01 ? Math.sin(t * 500) * (1 - t / 0.01) * 30 : 0;
+                    // gsap.set(sol, { x: shake, y: 0 });
+
+                    // Fragments : delay progressif pour chaque fragment
+                    gsap.set(".fragment", {
+                        opacity: 1,
+                        x: i => {
+                            const delay = i / fragments.length * 0.2;
+                            const localT = Math.max(0, (t - delay) / (1 - delay));
+                            return fragments[i].xOffset * localT;
+                        },
+                        y: i => {
+                            const delay = i / fragments.length * 0.2;
+                            const localT = Math.max(0, (t - delay) / (1 - delay));
+                            return fragments[i].yOffset * localT;
+                        },
+                        rotation: i => {
+                            const delay = i / fragments.length * 0.2;
+                            const localT = Math.max(0, (t - delay) / (1 - delay));
+                            return fragments[i].rotation * localT;
+                        },
+                        scale: i => {
+                            const delay = i / fragments.length * 0.2;
+                            const localT = Math.max(0, (t - delay) / (1 - delay));
+                            return 1 - localT * 0.3;
+                        }
+                    });
+                }
             }
         }
     });
 }
 
 onMount(() => {
-    const viewHeight = window.innerHeight * (VIEW_H_VH / 100);
+    let scrollHeight = getScrollHeight();
+    function updateScrollHeight() {
+        scrollHeight = getScrollHeight();
+    }
+    window.addEventListener('resize', updateScrollHeight);
 
     // Init Lenis
     lenis = new Lenis({
@@ -119,27 +156,16 @@ onMount(() => {
 
     lenis.on('scroll', ScrollTrigger.update);
 
-    // Initial positions
-    gsap.set(carre, {
-        opacity: 1,
-        y: -viewHeight * 0.7
-    });
-    gsap.set(".fragment", {
-        opacity: 0,
-        x: 0,
-        y: 0,
-        rotation: 0
-    });
-
     setFragmentsContainerPosition();
     window.addEventListener('scroll', setFragmentsContainerPosition);
+    window.addEventListener('resize', setFragmentsContainerPosition);
 
-    animateScroll({
-        viewHeight
-    });
+    animateScroll({ getViewHeight: () => scrollHeight });
 
     onDestroy(() => {
         window.removeEventListener('scroll', setFragmentsContainerPosition);
+        window.removeEventListener('resize', setFragmentsContainerPosition);
+        window.removeEventListener('resize', updateScrollHeight);
         lenis?.destroy();
         ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     });
@@ -171,7 +197,7 @@ onMount(() => {
     class="animation-component"
     style="margin-top: {SOL_OFFSET_VH}vh;"
     >
-    <div bind:this={sol} class="sol"></div>
+    <div bind:this={sol} class="sol" style="height: {SOL_HEIGHT}px;"></div>
     <div class="scroll-space"></div>
 </div>
 
@@ -219,7 +245,7 @@ onMount(() => {
 
 .sol {
     width: 300px;
-    height: 20px;
+    /* height: 20px;  <-- Retiré, géré en JS */
     background: #333;
     margin: 0 auto;
     position: relative;
