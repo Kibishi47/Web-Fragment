@@ -1,9 +1,13 @@
 // constants.js
 export const VIEW_H_VH     = 250;
-export const SOL_OFFSET_VH = -100;
-export const IMPACT_POINT  = 0.3;
-export const BREAK_POINT   = 0.35;
+export const SOL_OFFSET_VH = -150;
+export const IMPACT_POINT  = 0.25;
+export const BREAK_POINT   = 0.30;
 export const FRAGMENT_COUNT = 15;
+
+export const SQUARE_WIDTH = 100;
+export const SQUARE_HEIGHT = 100;
+
 
 export function createFragments(count) {
   return Array.from({ length: count }, () => {

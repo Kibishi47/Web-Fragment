@@ -26,15 +26,16 @@
       start: "top top", 
       end: "+=1000vh",
       scrub: true,
-      markers: true // Désactiver en production
+      markers: true,
+      id: "parallax",
     };
 
     // Panneau décoratif 1 (arrière-plan, le plus lent)
     // Panneau décoratif 1 (arrière-plan, commence plus haut)
     gsap.fromTo(decorPanel1, 
-      { y: '75vh' }, // Position de départ plus haute
+      { y: '90vh' }, // Position de départ plus haute
       {
-        y: '-75vh', // Position finale
+        y: '-90vh', // Position finale
         ease: 'none',
         scrollTrigger: { ...commonTrigger }
       }
@@ -42,9 +43,9 @@
 
     // Panneau décoratif 2 (position intermédiaire)
     gsap.fromTo(decorPanel2, 
-      { y: '150vh' }, // Position de départ intermédiaire
+      { y: '180vh' }, // Position de départ intermédiaire
       {
-        y: '-75vh', // Position finale
+        y: '-90vh', // Position finale
         ease: 'none',
         scrollTrigger: { ...commonTrigger }
       }
@@ -52,9 +53,9 @@
 
     // Panneau principal avec texte (commence plus bas)
     gsap.fromTo(mainPanel, 
-      { y: '300vh' }, // Position de départ standard
+      { y: '360vh' }, // Position de départ standard
       {
-        y: '-75vh', // Position finale
+        y: '-90vh', // Position finale
         ease: 'none',
         scrollTrigger: { ...commonTrigger }
       }
@@ -115,7 +116,7 @@
   .parallax-panel {
     position: absolute;
     width: 100%;
-    height: 70vh;
+    height: 90vh;
     left: 0;
     top: 0; 
     display: flex;

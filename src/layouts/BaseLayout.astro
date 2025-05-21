@@ -1,8 +1,25 @@
+---
+import '../styles/global.css';
+const { title } = Astro.props;
+---
+
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SpinBack - Site Officiel</title>
+    <!-- <title>SpinBack - Site Officiel</title> -->
+    <title>{title}</title>
+    <link rel="preload" href="/fonts/Tomarik-Poster.woff2" as="font" type="font/woff2" crossorigin />
+    <script is:inline>
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    </script>
   </head>
   <body>
     <slot />

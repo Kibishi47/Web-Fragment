@@ -1,15 +1,13 @@
 ---
+import Description from '../components/Description.svelte';
 import Features from '../components/Features.svelte';
 import Footer from '../components/Footer.svelte';
 import Ground from '../components/Ground.svelte';
-import Hero from '../components/Hero.svelte';
-import BaseLayout from '../layouts/BaseLayout.astro';
 import Parallax from '../components/Parallax.svelte';
-import Description from '../components/Description.svelte';
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout>
+<BaseLayout title="SpinBack - Site Officiel">
   <!-- <Hero title="Nom du Jeu" subtitle="Prépare-toi à sauver l'univers" /> -->
   <Parallax client:load/>
     
