@@ -1,19 +1,19 @@
 /* CSS Variables for theming */
 :root {
   /* Light theme (default) */
-  --background: #ffffff;
-  --foreground: #111111;
-  --muted: #666666;
+  --background: #6d09ce;
+  --foreground: #ffffff;
+  --muted: #cccccc;
   --accent: #3498db;
   --accent-hover: #2980b9;
-  --border: #e2e8f0;
-  --card-bg: #f8fafc;
-  --shadow: rgba(0, 0, 0, 0.1);
+  --border: #333333;
+  --card-bg: #111111;
+  --shadow: rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] {
   /* Dark theme */
-  --background: #000000;
+  --background: #6d09ce;
   --foreground: #ffffff;
   --muted: #cccccc;
   --accent: #3498db;

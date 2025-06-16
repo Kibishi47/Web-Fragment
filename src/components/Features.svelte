@@ -84,7 +84,7 @@
 .content-1 {
     max-height: 250vh;
     height: 250vh;
-    background-color: var(--card-bg);
+    /* background-color: var(--card-bg); */
     display: flex;
     flex-direction: column;
     align-items: stretch;
