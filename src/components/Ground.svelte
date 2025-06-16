@@ -4,7 +4,6 @@
   import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
   import Lenis from "lenis";
   import {
-    VIEW_H_VH,
     SOL_OFFSET_VH,
     IMPACT_POINT,
     BREAK_POINT,
@@ -41,9 +40,7 @@
   }
 
   function getHeroOffset() {
-    // Remplacer ce sélecteur par celui de votre hero
-    const hero = document.querySelector(".hero"); // Ajustez le sélecteur selon votre structure
-
+    const hero = document.querySelector(".hero");
     return hero ? hero.offsetHeight : 0;
   }
 
@@ -51,44 +48,38 @@
     gsap.registerPlugin(ScrollTrigger);
 
     const heroOffset = getHeroOffset();
-
-    // Ajuster les dimensions en fonction de la taille de l'écran
     const mobileScale = isMobile ? 0.7 : 1;
     const squareWidth = SQUARE_WIDTH * mobileScale;
     const squareHeight = SQUARE_HEIGHT * mobileScale;
     const solHeight = SOL_HEIGHT * mobileScale;
 
-    // Mettre à jour les dimensions des éléments
+    // Dimensions des éléments
     gsap.set(carre, { width: squareWidth, height: squareHeight });
     gsap.set(sol, { height: solHeight });
 
-    // Position initiale du carré
+    // Position initiale
     const initialY = -squareHeight + heroOffset;
     gsap.set(carre, { opacity: 0, y: initialY, autoAlpha: 1 });
     gsap.set(".fragment", { opacity: 0, x: 0, y: 0, rotation: 0, scale: 1 });
     gsap.set(sol, { x: 0 });
 
-    // Une seule timeline avec un pin-spacer pour maintenir le carré en place
-    const tl = gsap.timeline({
+    // Timeline principale
+    gsap.timeline({
       scrollTrigger: {
         trigger: "#features",
         start: "top 90%",
         end: "bottom bottom",
         scrub: isMobile ? 0.5 : 1,
         markers: true,
-        pin: false,
         onEnter: () => {
-          // Rendre le carré visible quand on entre dans la zone
-          gsap.to(carre, { opacity: 1, autoAlpha: 1, duration: 0.3 });
+          gsap.to(carre, { opacity: 1, duration: 0.3 });
         },
         onLeaveBack: () => {
-          // Remettre le carré à sa position initiale si on remonte
           gsap.to(carre, { opacity: 0, y: initialY, duration: 0.3 });
         },
         onUpdate: (self) => {
           setFragmentsContainerPosition();
 
-          // Ne commencer l'animation que lorsqu'on atteint le trigger
           if (self.progress === 0) {
             gsap.set(carre, { y: initialY });
             return;
@@ -98,7 +89,7 @@
           const solTop = sol.getBoundingClientRect().top;
           const viewHeight = getViewHeight();
 
-          // PHASE 1 : descente (ease out)
+          // PHASE 1: Descente
           if (prog <= IMPACT_POINT) {
             const startY = initialY;
             const endY = solTop - squareHeight;
@@ -109,8 +100,8 @@
             sol.style.opacity = 1;
             gsap.set(".fragment", { opacity: 0 });
             gsap.set(sol, { x: 0 });
-          }
-          // PHASE 2 : enfoncement (rebond)
+          } 
+          // PHASE 2: Rebond
           else if (prog <= BREAK_POINT) {
             const t = (prog - IMPACT_POINT) / (BREAK_POINT - IMPACT_POINT);
             const eased = gsap.parseEase("elastic.out(1, 0.5)")(t);
@@ -119,8 +110,8 @@
             sol.style.opacity = 1;
             gsap.set(".fragment", { opacity: 0 });
             gsap.set(sol, { y: eased * (6 * mobileScale) });
-          }
-          // PHASE 3 : cassure/dispersion
+          } 
+          // PHASE 3: Dispersion
           else {
             const t = (prog - BREAK_POINT) / (1 - BREAK_POINT);
             const eased = gsap.parseEase("power2.in")(t);
@@ -130,20 +121,18 @@
             gsap.set(carre, { y });
             sol.style.opacity = Math.max(0, 1 - eased * 200);
 
-            // Fragments : delay progressif pour chaque fragment
+            // Animation des fragments
             gsap.set(".fragment", {
               opacity: 1,
               x: (i) => {
                 const delay = (i / fragments.length) * 0.2;
                 const localT = Math.max(0, (t - delay) / (1 - delay));
-                // Réduire la dispersion sur mobile
                 const dispersionFactor = isMobile ? 0.7 : 1;
                 return fragments[i].xOffset * localT * dispersionFactor;
               },
               y: (i) => {
                 const delay = (i / fragments.length) * 0.2;
                 const localT = Math.max(0, (t - delay) / (1 - delay));
-                // Réduire la dispersion sur mobile
                 const dispersionFactor = isMobile ? 0.7 : 1;
                 return fragments[i].yOffset * localT * dispersionFactor;
               },
@@ -168,13 +157,9 @@
     checkMobile();
     let scrollHeight = getScrollHeight();
 
-    function updateScrollHeight() {
-      scrollHeight = getScrollHeight();
-    }
-
     function handleResize() {
       checkMobile();
-      updateScrollHeight();
+      scrollHeight = getScrollHeight();
       setFragmentsContainerPosition();
 
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
@@ -183,16 +168,16 @@
 
     window.addEventListener("resize", handleResize);
 
-    // Init Lenis avec des paramètres adaptés aux mobiles
+    // Initialisation de Lenis
     lenis = new Lenis({
-      duration: isMobile ? 0.8 : 1.2, // Plus court sur mobile
+      duration: isMobile ? 0.8 : 1.2,
       easing: (t) => Math.min(1, 1.001 - 2 ** (-10 * t)),
       direction: "vertical",
       gestureDirection: "vertical",
       smooth: true,
       mouseMultiplier: 1,
-      smoothTouch: true, // Activer le défilement fluide sur tactile
-      touchMultiplier: isMobile ? 1.5 : 2, // Ajuster pour mobile
+      smoothTouch: true,
+      touchMultiplier: isMobile ? 1.5 : 2,
       infinite: false,
     });
 
@@ -256,7 +241,7 @@
     position: absolute;
     width: 400px;
     height: 400px;
-    background-image: url("../assets/images/Guy.png");
+    background-image: url("/assets/images/Guy.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;

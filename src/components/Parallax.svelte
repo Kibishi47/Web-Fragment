@@ -2,7 +2,7 @@
   import { onMount, onDestroy } from 'svelte';
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
-  import cloudUrl from '../assets/images/clouds.png';
+  import cloudUrl from '/assets/images/clouds.png';
 
   let decorPanel1, decorPanel2, mainPanel;
   let isMobile = false;
