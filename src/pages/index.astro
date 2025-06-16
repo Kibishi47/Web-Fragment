@@ -5,15 +5,19 @@ import Footer from '../components/Footer.svelte';
 import Ground from '../components/Ground.svelte';
 import Parallax from '../components/Parallax.svelte';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ScrollRestoration from '../components/ScrollRestoration.svelte';
+
 ---
 
 <BaseLayout title="SpinBack - Site Officiel">
-  <!-- <Hero title="Nom du Jeu" subtitle="Prépare-toi à sauver l'univers" /> -->
-  <Parallax client:load/>
+    <!-- <Hero title="Nom du Jeu" subtitle="Prépare-toi à sauver l'univers" /> -->
+     <ScrollRestoration client:load/>
+    
+    <Parallax client:load/>
     
     <Features />
     <Ground client:load/>
-    <!-- <Description /> -->
-  <!-- <Guy client:load/> -->
-  <Footer />
+      <!-- <Description /> -->
+    <!-- <Guy client:load/> -->
+    <Footer />
 </BaseLayout>

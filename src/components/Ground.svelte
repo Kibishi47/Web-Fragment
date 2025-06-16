@@ -20,6 +20,7 @@ let lenis;
 const fragments = createFragments(FRAGMENT_COUNT);
 let isMobile = false;
 
+
 function checkMobile() {
     isMobile = window.innerWidth <= 900;
     return isMobile;
@@ -54,7 +55,7 @@ function animateScroll({ getViewHeight }) {
     gsap.set(sol, { height: solHeight });
 
     // Initial positions
-    gsap.set(carre, { opacity: 1, y: -squareHeight });
+    gsap.set(carre, { opacity: 1, y: -squareHeight, autoAlpha: 1 });
     gsap.set(".fragment", { opacity: 0, x: 0, y: 0, rotation: 0, scale: 1 });
     gsap.set(sol, { x: 0 });
 
@@ -234,6 +235,7 @@ onMount(() => {
 }
 
 .carre {
+    visibility: hidden;
     position: absolute;
     width: 100px;
     height: 100px;
@@ -264,6 +266,7 @@ onMount(() => {
     position: relative;
     width: 100%;
     z-index: 500;
+    pointer-events: none;
 }
 
 .sol {
@@ -278,6 +281,7 @@ onMount(() => {
 
 .scroll-space {
     height: 150vh;
+    pointer-events: none;
 }
 
 html.lenis {
