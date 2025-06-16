@@ -42,7 +42,7 @@
         start: "top top", 
         end: isMobile ? "+=700vh" : "+=1000vh", // Réduire la distance sur mobile
         scrub: isMobile ? 0.5 : true, // Scrub plus rapide sur mobile
-        markers: false,
+        markers: true,
       };
 
       // Panneau décoratif 1 (arrière-plan, commence plus haut)
@@ -114,13 +114,13 @@
     <!-- Panneau décoratif 2 -->
     <div bind:this={decorPanel2} 
         class="parallax-panel"
-        style="background-color: red; z-index: 2;">
+        style="z-index: 2;">
     </div>
     
     <!-- Panneau principal avec texte -->
     <div bind:this={mainPanel} 
         class="parallax-panel main-panel"
-        style="background-color: yellow; z-index: 3;">
+        style="z-index: 3;">
         <slot>
           <!-- Le contenu principal sera inséré ici -->
         </slot>
@@ -142,6 +142,7 @@
     z-index: 1; 
     pointer-events: none;
     overflow: hidden;
+    pointer-events: none;
   }
 
   .parallax-panel {
@@ -155,6 +156,7 @@
     align-items: center;
     will-change: transform;
     transition: height 0.3s ease;
+    pointer-events: none;
   }
   
   .main-panel {

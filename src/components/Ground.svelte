@@ -21,7 +21,7 @@ const fragments = createFragments(FRAGMENT_COUNT);
 let isMobile = false;
 
 function checkMobile() {
-    isMobile = window.innerWidth <= 768;
+    isMobile = window.innerWidth <= 900;
     return isMobile;
 }
 
@@ -65,7 +65,7 @@ function animateScroll({ getViewHeight }) {
             start: "top top",
             end: "bottom bottom",
             scrub: isMobile ? 0.5 : 1, // Scrub plus rapide sur mobile
-            markers: false,
+            markers: true,
             onUpdate: () => {
                 setFragmentsContainerPosition();
 
@@ -247,6 +247,7 @@ onMount(() => {
 
 .fragments-container {
     position: fixed;
+    pointer-events: none;
 }
 
 .fragment {
@@ -276,7 +277,7 @@ onMount(() => {
 }
 
 .scroll-space {
-    height: 100vh;
+    height: 150vh;
 }
 
 html.lenis {
