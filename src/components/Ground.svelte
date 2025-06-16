@@ -11,6 +11,7 @@
     SQUARE_HEIGHT,
     SQUARE_WIDTH,
     SOL_HEIGHT,
+    SQUARE_POSITION_OFFSET,
     createFragments,
   } from "./constants.js";
 
@@ -58,7 +59,7 @@
     gsap.set(sol, { height: solHeight });
 
     // Position initiale
-    const initialY = -squareHeight + heroOffset;
+    const initialY = -squareHeight + heroOffset + SQUARE_POSITION_OFFSET;
     gsap.set(carre, { opacity: 1, y: initialY, autoAlpha: 1 });
     gsap.set(".fragment", { opacity: 0, x: 0, y: 0, rotation: 0, scale: 1 });
     gsap.set(sol, { x: 0 });
@@ -109,7 +110,7 @@
             gsap.set(carre, { y });
             sol.style.opacity = 1;
             gsap.set(".fragment", { opacity: 0 });
-            gsap.set(sol, { y: eased * (6 * mobileScale) });
+            // gsap.set(sol, { y: eased * (0 * mobileScale) });
           } 
           // PHASE 3: Dispersion
           else {

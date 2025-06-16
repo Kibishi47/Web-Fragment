@@ -7,6 +7,7 @@ export const FRAGMENT_COUNT = 15
 // Dimensions de base (pour desktop)
 export const SQUARE_WIDTH = 300
 export const SQUARE_HEIGHT = 300
+export const SQUARE_POSITION_OFFSET = 100
 export const SOL_HEIGHT = 10
 
 // Fonction pour créer des fragments avec des tailles adaptatives

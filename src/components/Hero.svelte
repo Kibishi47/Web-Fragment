@@ -1,4 +1,6 @@
 <script>
+  import CustomButton from "components/CustomButton.svelte";
+  
   // Props avec valeurs par défaut
   export let title = "SpinBack";
   export let subtitle = "Seule la vérité sonne juste.";
@@ -7,10 +9,11 @@
   export let height = "100vh";
   export let textColor = "#ffffff";
   export let overlayOpacity = 0.4;
-  export let buttonText = "Commencer l'aventure";
+  export let buttonText = "Participer au kickstarter";
   export let buttonLink = "#features";
   export let showButton = true;
   export let alignText = "center";
+
 </script>
 
 <section
@@ -38,7 +41,12 @@
     <h1>{title}</h1>
     <p>{subtitle}</p>
     {#if showButton}
-      <a href={buttonLink} class="cta-button">{buttonText}</a>
+      <CustomButton
+        label={buttonText}
+        link={buttonLink}
+        newTab={false}
+        size={"400px"}
+      />
     {/if}
   </div>
 </section>
@@ -107,21 +115,6 @@
     line-height: 1.5;
   }
 
-  .cta-button {
-    display: inline-block;
-    padding: 1rem 2rem;
-    background-color: #3498db;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-  }
-
-  .cta-button:hover {
-    background-color: #2980b9;
-  }
 
   /* Responsive */
   @media (max-width: 768px) {

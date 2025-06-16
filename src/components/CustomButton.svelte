@@ -6,12 +6,14 @@
   export let hoverBackgroundSvg = "/assets/images/button.svg";
   export let newTab = false;
   export let size = "200px"; // (largeur)
+  export let ratio = 0.2;
 
   let isHovered = false;
 
   function toggleHover(state) {
     isHovered = state;
   }
+  $: buttonHeight = `calc(${size} * ${ratio})`;
 </script>
 
 <a
@@ -21,18 +23,10 @@
   class="custom-btn"
   on:mouseenter={() => toggleHover(true)}
   on:mouseleave={() => toggleHover(false)}
-  style="width: {size};"
+  style="width: {size}; height: {buttonHeight}; background-image: url({isHovered
+    ? hoverBackgroundSvg
+    : backgroundSvg}); background-size: cover; background-repeat: no-repeat; background-position: center;"
 >
-  <!-- Fond dynamique -->
-  <img
-    src={isHovered ? hoverBackgroundSvg : backgroundSvg}
-    alt="Bouton fond"
-    class="btn-bg"
-  />
-
-  <!-- Bordure fixe -->
-  <img src={borderSvg} alt="" class="btn-border" />
-
   <!-- Texte -->
   <span class="btn-label">{label}</span>
 </a>
@@ -51,6 +45,7 @@
 
   .custom-btn .btn-bg {
     display: block;
+    object-fit: cover;
     width: 100%;
     height: auto;
   }
