@@ -6,7 +6,7 @@
 
   export let kickstarter = {
     label: "KICKSTARTER",
-    href: "https://kickstarter.com",
+    href: "/",
   };
   export let activeLang = "FR";
 
@@ -62,7 +62,7 @@
     background-color: #0c0b19;
     position: sticky;
     top: 0;
-    z-index: 50;
+    z-index: 5000;
   }
 
   .logo img {

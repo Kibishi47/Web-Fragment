@@ -59,7 +59,7 @@
 
     // Position initiale
     const initialY = -squareHeight + heroOffset;
-    gsap.set(carre, { opacity: 0, y: initialY, autoAlpha: 1 });
+    gsap.set(carre, { opacity: 1, y: initialY, autoAlpha: 1 });
     gsap.set(".fragment", { opacity: 0, x: 0, y: 0, rotation: 0, scale: 1 });
     gsap.set(sol, { x: 0 });
 
@@ -67,7 +67,7 @@
     gsap.timeline({
       scrollTrigger: {
         trigger: "#features",
-        start: "top 90%",
+        start: "top 110%",
         end: "bottom bottom",
         scrub: isMobile ? 0.5 : 1,
         markers: true,
@@ -75,7 +75,7 @@
           gsap.to(carre, { opacity: 1, duration: 0.3 });
         },
         onLeaveBack: () => {
-          gsap.to(carre, { opacity: 0, y: initialY, duration: 0.3 });
+          gsap.to(carre, { opacity: 1, y: initialY, duration: 0.3 });
         },
         onUpdate: (self) => {
           setFragmentsContainerPosition();
@@ -232,7 +232,7 @@
     left: 0;
     width: 100%;
     height: 100vh;
-    z-index: 1000;
+    z-index: 10;
     pointer-events: none;
   }
 
@@ -248,7 +248,7 @@
     left: 50%;
     top: 0;
     transform: translateX(-50%);
-    z-index: 10;
+    z-index: 5;
     transition:
       width 0.3s ease,
       height 0.3s ease;
@@ -272,7 +272,7 @@
   .animation-component {
     position: relative;
     width: 100%;
-    z-index: 500;
+    z-index: 9;
     pointer-events: none;
   }
 
@@ -282,7 +282,7 @@
     background: #333;
     margin: 0 auto;
     position: relative;
-    z-index: 500;
+    z-index: 9;
     transition:
       width 0.3s ease,
       height 0.3s ease;
