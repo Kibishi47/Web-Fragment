@@ -1,23 +1,24 @@
 ---
-import Description from 'components/Description.svelte';
-import Features from 'components/Features.svelte';
-import Footer from 'components/Footer.svelte';
-import Ground from 'components/Ground.svelte';
-import Hero from 'components/Hero.svelte';
-import BaseLayout from 'layouts/BaseLayout.astro';
-import ScrollRestoration from 'components/ScrollRestoration.svelte';
-
+import Description from "components/Description.svelte";
+import Features from "components/Features.svelte";
+import Footer from "components/Footer.svelte";
+import Ground from "components/Ground.svelte";
+import Hero from "components/Hero.svelte";
+import BaseLayout from "layouts/BaseLayout.astro";
+import ScrollRestoration from "components/ScrollRestoration.svelte";
+import Navbar from "components/Navbar.svelte";
 ---
 
 <BaseLayout title="SpinBack - Site Officiel">
-    <!-- <Hero title="Nom du Jeu" subtitle="Prépare-toi à sauver l'univers" /> -->
-     <ScrollRestoration client:load/>
-    
-    <Hero client:load/>
-    
-    <Features />
-    <Ground client:load/>
-      <!-- <Description /> -->
-    <!-- <Guy client:load/> -->
-    <Footer />
+  <!-- <Hero title="Nom du Jeu" subtitle="Prépare-toi à sauver l'univers" /> -->
+  <ScrollRestoration client:load />
+
+  <Navbar client:load />
+  <Hero client:load />
+
+  <Features />
+  <Ground client:load />
+  <!-- <Description /> -->
+  <!-- <Guy client:load/> -->
+  <Footer />
 </BaseLayout>

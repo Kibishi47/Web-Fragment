@@ -2,27 +2,38 @@
   // Props avec valeurs par défaut
   export let title = "SpinBack";
   export let subtitle = "Seule la vérité sonne juste.";
-  export let videoUrl = "/assets/videos/hero.mp4"; // Vidéo par défaut
-  export let fallbackImageUrl = "/assets/images/hero-image.png"; // Image de secours
-  export let height = "100vh"; // Hauteur par défaut
-  export let textColor = "#ffffff"; // Couleur du texte
-  export let overlayOpacity = 0.4; // Opacité de l'overlay
+  export let videoUrl = "/assets/videos/hero.mp4";
+  export let fallbackImageUrl = "/assets/images/hero-image.png";
+  export let height = "100vh";
+  export let textColor = "#ffffff";
+  export let overlayOpacity = 0.4;
   export let buttonText = "Commencer l'aventure";
   export let buttonLink = "#features";
   export let showButton = true;
-  export let alignText = "center"; // center, left, right
+  export let alignText = "center";
 </script>
 
-<section class="hero" style="--hero-height: {height}; --text-color: {textColor}; --overlay-opacity: {overlayOpacity}; --text-align: {alignText};">
+<section
+  class="hero"
+  style="--hero-height: {height}; --text-color: {textColor}; --overlay-opacity: {overlayOpacity}; --text-align: {alignText};"
+>
   <div class="hero-media-container">
-    <video autoplay loop muted playsinline class="hero-video" poster={fallbackImageUrl}>
-      <source src={videoUrl} type="video/mp4">
+    <video
+      autoplay
+      loop
+      muted
+      playsinline
+      class="hero-video"
+      poster={fallbackImageUrl}
+    >
+      <source src={videoUrl} type="video/mp4" />
+
       <!-- Fallback pour les navigateurs qui ne supportent pas la vidéo -->
       <img src={fallbackImageUrl} alt="Hero background" class="hero-image" />
     </video>
     <div class="overlay"></div>
   </div>
-  
+
   <div class="hero-content">
     <h1>{title}</h1>
     <p>{subtitle}</p>
@@ -53,7 +64,8 @@
     z-index: 1;
   }
 
-  .hero-video, .hero-image {
+  .hero-video,
+  .hero-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
