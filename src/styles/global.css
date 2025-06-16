@@ -1,8 +1,8 @@
 /* CSS Variables for theming */
 :root {
   /* Light theme (default) */
-  --background: #6d09ce;
-  --foreground: #ffffff;
+  --background: #ffffff;
+  --foreground: #6d09ce;
   --muted: #cccccc;
   --accent: #3498db;
   --accent-hover: #2980b9;

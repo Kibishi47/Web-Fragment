@@ -1,5 +1,6 @@
 <script>
   import CustomButton from "./CustomButton.svelte";
+  import ThemeToggle from "./ThemeToggle.svelte";
 
   export let links = [{ label: "ACCUEIL", href: "/" }];
 
@@ -24,6 +25,9 @@
 
   <!-- Menu -->
   <div class="menu">
+    <!-- Thème clair / sombre -->
+    <ThemeToggle />
+
     {#each links as link}
       <a href={link.href} class="nav-link">{link.label}</a>
     {/each}
