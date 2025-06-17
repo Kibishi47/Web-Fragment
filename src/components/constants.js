@@ -1,7 +1,7 @@
 // constants.js
-export const SOL_OFFSET_VH = -200
-export const IMPACT_POINT = 0.25
-export const BREAK_POINT = 0.3
+export const SOL_OFFSET_VH = -50
+export const IMPACT_POINT = 0.4
+export const BREAK_POINT = 0.5
 export const FRAGMENT_COUNT = 15
 
 // Dimensions de base (pour desktop)

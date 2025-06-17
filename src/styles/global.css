@@ -62,6 +62,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #1C0B3F;
 }
 
 /* Typography */
@@ -76,33 +77,8 @@ h6 {
   line-height: 1.2;
 }
 
-h1 {
-  font-family: Salted;
-  font-size: 36px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
-h2 {
-  font-size: 2rem;
-}
-
-h3 {
-  font-size: 1.75rem;
-}
-
-h4 {
-  font-size: 1.5rem;
-}
-
-p {
-  margin-bottom: 1rem;
-  color: var(--foreground);
-}
-
 a {
-  color: var(--accent);
+  /* color: var(--accent); */
   text-decoration: none;
   transition: color 0.3s ease, transform 0.3s ease;
 }

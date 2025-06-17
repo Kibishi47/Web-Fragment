@@ -8,6 +8,7 @@ import BaseLayout from "layouts/BaseLayout.astro";
 import ScrollRestoration from "components/ScrollRestoration.svelte";
 import Navbar from "components/Navbar.svelte";
 import SectionExplain from "components/SectionExplain.svelte";
+import SectionExplain2 from "components/SectionExplain2.svelte";
 ---
 
 <BaseLayout title="SpinBack - Site Officiel">
@@ -16,9 +17,11 @@ import SectionExplain from "components/SectionExplain.svelte";
   <Navbar client:load />
   <Hero client:load />
 
+  <!-- <SectionExplain client:load /> -->
   <SectionExplain client:load />
-
-  <Features />
+  <SectionExplain2 client:load />
+  
+  <!-- <Features /> -->
   <Ground client:load />
   <!-- <Description /> -->
   <!-- <Guy client:load/> -->
