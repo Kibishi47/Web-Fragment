@@ -73,7 +73,7 @@
         scrub: isMobile ? 0.5 : 1,
         markers: true,
         onEnter: () => {
-          gsap.to(carre, { opacity: 1, duration: 0.3 });
+          gsap.to(carre, { opacity: 1, y: initialY, duration: 0.3 });
         },
         onLeaveBack: () => {
           gsap.to(carre, { opacity: 1, y: initialY, duration: 0.3 });

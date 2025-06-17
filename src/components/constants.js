@@ -1,5 +1,5 @@
 // constants.js
-export const SOL_OFFSET_VH = -50
+export const SOL_OFFSET_VH = -80
 export const IMPACT_POINT = 0.4
 export const BREAK_POINT = 0.5
 export const FRAGMENT_COUNT = 15
@@ -7,8 +7,9 @@ export const FRAGMENT_COUNT = 15
 // Dimensions de base (pour desktop)
 export const SQUARE_WIDTH = 300
 export const SQUARE_HEIGHT = 300
-export const SQUARE_POSITION_OFFSET = 100
+export const SQUARE_POSITION_OFFSET = -300
 export const SOL_HEIGHT = 10
+
 
 // Fonction pour créer des fragments avec des tailles adaptatives
 export function createFragments(count) {
