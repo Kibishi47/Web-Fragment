@@ -31,6 +31,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Salted";
+  src: url("/assets/fonts/Salted_Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* Reset and base styles */
 * {
   box-sizing: border-box;
@@ -46,7 +53,7 @@ html {
 
 body {
   margin: 0;
-  font-family: "Tomarik", sans-serif;
+  font-family: "Salted", sans-serif;
   background: var(--background);
   color: var(--foreground);
   text-align: center;
@@ -62,7 +69,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Tomarik", sans-serif;
+  font-family: "Salted", sans-serif;
   margin-bottom: 1rem;
   line-height: 1.2;
 }
@@ -96,7 +103,7 @@ a {
 
 a:hover {
   color: var(--accent-hover);
-  transform: translateY(-2px);
+  /* transform: translateY(-2px); */
 }
 
 /* Scroll container */
@@ -128,12 +135,12 @@ a:hover {
 }
 
 .hero img {
-  max-width: 200px;
-  transition: transform 0.3s ease;
+  /* max-width: 200px; */
+  /* transition: transform 0.3s ease; */
 }
 
 .hero img:hover {
-  transform: scale(1.05);
+  /* transform: scale(1.05); */
 }
 
 .hero h1 {

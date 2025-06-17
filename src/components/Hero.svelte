@@ -1,19 +1,18 @@
 <script>
   import CustomButton from "components/CustomButton.svelte";
-  
+
   // Props avec valeurs par défaut
   export let title = "SpinBack";
   export let subtitle = "Seule la vérité sonne juste.";
-  export let videoUrl = "/assets/videos/hero.mp4";
+  export let videoUrl = "/assets/videos/hero.webm";
   export let fallbackImageUrl = "/assets/images/hero-image.png";
-  export let height = "100vh";
+  export let height = "90vh";
   export let textColor = "#ffffff";
   export let overlayOpacity = 0.4;
   export let buttonText = "Participer au kickstarter";
   export let buttonLink = "#features";
   export let showButton = true;
   export let alignText = "center";
-
 </script>
 
 <section
@@ -44,8 +43,9 @@
       <CustomButton
         label={buttonText}
         link={buttonLink}
-        newTab={false}
-        size={"400px"}
+        fontSize="32px"
+        paddingX="24px"
+        paddingY="16px"
       />
     {/if}
   </div>
@@ -53,6 +53,7 @@
 
 <style>
   .hero {
+    margin-top: 0;
     position: relative;
     width: 100%;
     height: var(--hero-height);
@@ -114,7 +115,6 @@
     margin-right: auto;
     line-height: 1.5;
   }
-
 
   /* Responsive */
   @media (max-width: 768px) {

@@ -2,7 +2,7 @@
   import CustomButton from "./CustomButton.svelte";
   import ThemeToggle from "./ThemeToggle.svelte";
 
-  export let links = [{ label: "ACCUEIL", href: "/" }];
+  export let links = [{}]; // [{ label: "ACCUEIL", href: "/" }]
 
   export let kickstarter = {
     label: "KICKSTARTER",
@@ -26,7 +26,7 @@
   <!-- Menu -->
   <div class="menu">
     <!-- Thème clair / sombre -->
-    <ThemeToggle />
+    <!-- <ThemeToggle /> -->
 
     {#each links as link}
       <a href={link.href} class="nav-link">{link.label}</a>
@@ -37,6 +37,9 @@
       label={kickstarter.label}
       link={kickstarter.href}
       newTab={true}
+      size="143px"
+      fontSize="18px"
+      backgroundSvg="/assets/images/button-154x47.svg"
     />
 
     <!-- Switch de langues -->
@@ -55,6 +58,7 @@
 
 <style>
   nav.navbar {
+    position: fixed;
     display: flex;
     justify-content: space-between;
     align-items: center;

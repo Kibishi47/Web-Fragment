@@ -1,19 +1,18 @@
 <script>
   export let label = "KICKSTARTER";
   export let link = "#";
-  export let backgroundSvg = "/assets/images/button.svg";
-  export let borderSvg = "/assets/images/button.svg";
-  export let hoverBackgroundSvg = "/assets/images/button.svg";
+  export let backgroundSvg = "/assets/images/button-413x74.svg";
+  export let hoverBackgroundSvg = null;
   export let newTab = false;
-  export let size = "200px"; // (largeur)
-  export let ratio = 0.2;
+  export let fontSize = "1.2rem";
+  export let paddingX = "10px";
+  export let paddingY = "5px";
 
   let isHovered = false;
 
   function toggleHover(state) {
     isHovered = state;
   }
-  $: buttonHeight = `calc(${size} * ${ratio})`;
 </script>
 
 <a
@@ -23,12 +22,14 @@
   class="custom-btn"
   on:mouseenter={() => toggleHover(true)}
   on:mouseleave={() => toggleHover(false)}
-  style="width: {size}; height: {buttonHeight}; background-image: url({isHovered
-    ? hoverBackgroundSvg
-    : backgroundSvg}); background-size: cover; background-repeat: no-repeat; background-position: center;"
 >
-  <!-- Texte -->
-  <span class="btn-label">{label}</span>
+  <!-- Image de fond -->
+  <img src={isHovered && hoverBackgroundSvg ? hoverBackgroundSvg : backgroundSvg} alt="Button" class="btn-img" />
+
+  <!-- Zone de texte avec padding -->
+  <div class="btn-content" style="padding: {paddingY} {paddingX}; font-size: {fontSize};">
+    <span class="btn-label">{label}</span>
+  </div>
 </a>
 
 <style>
@@ -37,34 +38,33 @@
     display: inline-block;
     cursor: pointer;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 400;
     color: white;
-    font-size: 1.2rem;
     user-select: none;
+    width: fit-content; /* largeur automatique */
   }
 
-  .custom-btn .btn-bg {
+  .custom-btn .btn-img {
     display: block;
-    object-fit: cover;
     width: 100%;
     height: auto;
   }
 
-  .custom-btn .btn-border {
+  .btn-content {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     pointer-events: none;
+    box-sizing: border-box;
   }
 
-  .custom-btn .btn-label {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
+  .btn-label {
     white-space: nowrap;
+    text-align: center;
   }
 </style>
