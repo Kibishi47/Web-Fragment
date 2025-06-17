@@ -242,7 +242,7 @@
     position: absolute;
     width: 400px;
     height: 400px;
-    background-image: url("/assets/images/Guy.png");
+    background-image: url("/assets/images/guy.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;

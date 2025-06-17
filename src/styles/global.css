@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 /* CSS Variables for theming */
 :root {
   /* Light theme (default) */
@@ -75,7 +77,11 @@ h6 {
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-family: Salted;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 h2 {
