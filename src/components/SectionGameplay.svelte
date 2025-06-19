@@ -1,15 +1,20 @@
 <script>
-  export let title = "GAMEPLAY";
+  import { t } from '../i18n/translations.js' // ajustez le chemin
+  
+  export let locale = 'fr'; // nouvelle prop
+  export let title = ""; // On va utiliser la traduction
   export let backgroundColor = "#3a2a5c";
   export let titleColor = "#ffffff";
   export let textColor = "#ffffff";
   export let padding = "100px 40px";
-  export let features = [
+  
+  // Features avec les clés de traduction
+  $: features = [
     {
       id: 1,
       image: "/assets/images/gameplay1.png",
-      imageAlt: "Interface de jeu avec souvenirs",
-      text: "Revivez la soirée à travers trois souvenirs distincts, chaque souvenir se compose comme une scène interactive que vous pouvez contrôler",
+      imageAlt: t('s4.gameplay.feature1.alt', locale),
+      text: t('s4.gameplay.feature1.text', locale),
       imagePosition: "left",
       imageRotation: -8,
       imageScale: 1
@@ -17,8 +22,8 @@
     {
       id: 2,
       image: "/assets/images/gameplay2.png",
-      imageAlt: "Environnement de jeu 3D",
-      text: "Remontez le temps à travers différentes ambiances sonores et visuelles, l'histoire se répercute entre les différents souvenirs dans lesquels vous naviguez",
+      imageAlt: t('s4.gameplay.feature2.alt', locale),
+      text: t('s4.gameplay.feature2.text', locale),
       imagePosition: "right",
       imageRotation: 5,
       imageScale: 1.1
@@ -26,8 +31,8 @@
     {
       id: 3,
       image: "/assets/images/gameplay3.png",
-      imageAlt: "Interface d'enquête",
-      text: "Enquêtez sur le drame qui vous est introduit au début du jeu. Écoutez les conversations des personnages, regroupez vos observations dans votre dossier, et choisissez quels éléments vous souhaitez conserver dans votre témoignage",
+      imageAlt: t('s4.gameplay.feature3.alt', locale),
+      text: t('s4.gameplay.feature3.text', locale),
       imagePosition: "left",
       imageRotation: -3,
       imageScale: 0.95
@@ -45,7 +50,7 @@
       class="gameplay-title"
       style="color: {titleColor};"
     >
-      {title}
+      {title || t('s4.gameplay.title', locale)}
     </h2>
     
     <!-- Features -->
@@ -83,6 +88,7 @@
   </div>
 </section>
 
+<!-- Le CSS reste identique -->
 <style>
   .gameplay-section {
     width: 100%;
@@ -147,8 +153,6 @@
   .feature-image img {
     width: 100%;
     height: auto;
-    /* border-radius: 12px; */
-    /* border: 3px solid rgba(255, 255, 255, 0.1); */
     transition: border-color 0.3s ease;
   }
 
@@ -170,7 +174,6 @@
     opacity: 0.9;
   }
 
-  /* Animations */
   @keyframes fadeInUp {
     from {
       opacity: 0;
@@ -182,7 +185,6 @@
     }
   }
 
-  /* Responsive Design */
   @media (max-width: 1024px) {
     .feature-item {
       gap: 60px;
@@ -240,7 +242,6 @@
     }
   }
 
-  /* Effet parallax subtil */
   @media (prefers-reduced-motion: no-preference) {
     .feature-image {
       transition: transform 0.3s ease, filter 0.3s ease;
@@ -251,7 +252,6 @@
     }
   }
 
-  /* Mode sombre amélioré */
   @media (prefers-color-scheme: dark) {
     .feature-image img {
       border-color: rgba(255, 255, 255, 0.05);

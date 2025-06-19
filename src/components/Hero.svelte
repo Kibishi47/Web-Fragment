@@ -1,15 +1,16 @@
 <script>
   import CustomButton from "components/CustomButton.svelte";
+  import { t } from '../i18n/translations.js' // ajustez le chemin
 
-  // Props avec valeurs par défaut
-  export let title = "SpinBack";
-  export let subtitle = "Seule la vérité sonne juste.";
+  export let locale = 'fr'; // nouvelle prop
+  export let title = "";
+  export let subtitle = "";
   export let videoUrl = "/assets/videos/hero.webm";
   export let fallbackImageUrl = "/assets/images/hero-image.png";
   export let height = "90vh";
   export let textColor = "#ffffff";
   export let overlayOpacity = 0.4;
-  export let buttonText = "Participer au kickstarter";
+  export let buttonText = "";
   export let buttonLink = "#features";
   export let showButton = true;
   export let alignText = "center";
@@ -31,17 +32,17 @@
       <source src={videoUrl} type="video/mp4" />
 
       <!-- Fallback pour les navigateurs qui ne supportent pas la vidéo -->
-      <img src={fallbackImageUrl} alt="Hero background" class="hero-image" />
+      <img src={fallbackImageUrl} alt={t('hero.video_alt', locale)} class="hero-image" />
     </video>
     <div class="overlay"></div>
   </div>
 
   <div class="hero-content">
-    <h1>{title}</h1>
-    <p>{subtitle}</p>
+    <h1>{title || t('hero.title', locale)}</h1>
+    <p>{subtitle || t('hero.subtitle', locale)}</p>
     {#if showButton}
       <CustomButton
-        label={buttonText}
+        label={buttonText || t('hero.button', locale)}
         link={buttonLink}
         fontSize="32px"
         paddingX="24px"
@@ -51,6 +52,7 @@
   </div>
 </section>
 
+<!-- Le CSS reste identique -->
 <style>
   .hero {
     margin-top: 0;
@@ -87,7 +89,6 @@
     left: 0;
     width: 100%;
     height: 100%;
-    /* background-color: rgba(0, 0, 0, var(--overlay-opacity)); */
     z-index: 2;
   }
 
@@ -116,7 +117,6 @@
     line-height: 1.5;
   }
 
-  /* Responsive */
   @media (max-width: 768px) {
     .hero-content {
       padding: 1.5rem;

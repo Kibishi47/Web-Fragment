@@ -1,12 +1,14 @@
 <script>
-  import CustomButton from './CustomButton.svelte'; // Ajustez le chemin selon votre structure
+  import CustomButton from './CustomButton.svelte';
+  import { t } from '../i18n/translations.js' // ajustez le chemin
 
-  export let date = "25";
-  export let month = "juin";
-  export let year = "2025";
-  export let subtitle = "rejoignez l'aventure !";
-  export let title = "évènement beta-testing";
-  export let buttonText = "s'inscrire";
+  export let locale = 'fr'; // nouvelle prop
+  export let date = "";
+  export let month = "";
+  export let year = "";
+  export let subtitle = "";
+  export let title = "";
+  export let buttonText = "";
   export let buttonLink = "#";
   export let buttonBackgroundSvg = "/assets/images/button-198x86.svg";
   export let buttonHoverBackgroundSvg = null;
@@ -34,13 +36,13 @@
         >
           <div class="text-center text-white font-bold leading-tight w-full p-3 sm:p-4 md:p-5">
             <span class="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-0">
-              {date}
+              {date || t('s5.event.date.day', locale)}
             </span>
             <span class="block text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold tracking-wider -mt-2 -mb-1">
-              {month}
+              {month || t('s5.event.date.month', locale)}
             </span>
             <span class="block text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black">
-              {year}
+              {year || t('s5.event.date.year', locale)}
             </span>
           </div>
         </div>
@@ -51,14 +53,14 @@
             class="text-sm md:text-base font-semibold mb-4 tracking-widest uppercase animate-slide-in-right"
             style="color: {subtitleColor}; animation-delay: 0.3s; animation-fill-mode: both;"
           >
-            {subtitle}
+            {subtitle || t('s5.event.subtitle', locale)}
           </p>
           
           <h2 
             class="text-xl sm:text-2xl md:text-3xl lg:text-3xl font-black mb-8 md:mb-10 tracking-wide uppercase leading-tight animate-slide-in-right"
             style="color: {titleColor}; animation-delay: 0.5s; animation-fill-mode: both;"
           >
-            {title}
+            {title || t('s5.event.title', locale)}
           </h2>
           
           <!-- Bouton personnalisé -->
@@ -67,7 +69,7 @@
             style="animation-delay: 0.7s; animation-fill-mode: both;"
           >
             <CustomButton
-              label={buttonText}
+              label={buttonText || t('s5.event.button', locale)}
               link={buttonLink}
               backgroundSvg={buttonBackgroundSvg}
               hoverBackgroundSvg={buttonHoverBackgroundSvg}
@@ -82,8 +84,8 @@
   </div>
 </section>
 
+<!-- Le CSS reste identique -->
 <style>
-  /* Animations personnalisées */
   @keyframes fade-in-up {
     from {
       opacity: 0;
@@ -129,7 +131,6 @@
     animation: pulse-glow 2s ease-in-out infinite;
   }
 
-  /* Réduction des animations sur demande */
   @media (prefers-reduced-motion: reduce) {
     .animate-pulse-glow,
     .animate-fade-in-up,

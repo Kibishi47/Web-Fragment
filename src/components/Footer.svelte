@@ -1,17 +1,30 @@
 <script>
-  export let companyName = "SPINBACK";
-  export let year = "2025";
-  export let studioName = "Studio Kastet Ltd.";
-  export let copyrightText = "Spinback et le logo Spinback sont des marques déposées de Studio Kastet Ltd. en France.";
+  import { t } from '../i18n/translations.js' // ajustez le chemin
+  
+  export let locale = 'fr'; // nouvelle prop
+  export let companyName = "";
+  export let year = "";
+  export let studioName = "";
+  export let copyrightText = "";
   export let backgroundColor = "#2a1b4a";
   export let textColor = "#ffffff";
   export let linkColor = "#ffffff";
   export let linkHoverColor = "#ff1493";
   
-  export let links = [
-    { label: "MENTIONS LÉGALES", href: "/mentions-legales" },
-    { label: "COOKIES", href: "/cookies" },
-    { label: "DOSSIER DE CONCEPTION", href: "/dossier-conception" }
+  // Links avec traductions dynamiques
+  $: links = [
+    { 
+      label: t('footer.legal', locale), 
+      href: locale === 'en' ? "/en/legal-notice" : "/mentions-legales" 
+    },
+    { 
+      label: t('footer.cookies', locale), 
+      href: locale === 'en' ? "/en/cookies" : "/cookies" 
+    },
+    { 
+      label: t('footer.design', locale), 
+      href: locale === 'en' ? "/en/design-document" : "/dossier-conception" 
+    }
   ];
 </script>
 
@@ -23,11 +36,11 @@
     <!-- Copyright - Parfaitement centré -->
     <div class="text-center max-w-4xl">
       <p class="text-sm md:text-base font-medium tracking-wide leading-relaxed">
-        <span class="font-bold uppercase">{companyName}</span>
+        <span class="font-bold uppercase">{companyName || t('footer.company', locale)}</span>
         <span class="mx-1">©</span>
-        <span>{year}</span>
-        <span class="mx-1">{studioName}</span>
-        <span class="block sm:inline mt-2 sm:mt-0 sm:ml-1">{copyrightText}</span>
+        <span>{year || t('footer.year', locale)}</span>
+        <span class="mx-1">{studioName || t('footer.studio', locale)}</span>
+        <span class="block sm:inline mt-2 sm:mt-0 sm:ml-1">{copyrightText || t('footer.copyright', locale)}</span>
       </p>
     </div>
     

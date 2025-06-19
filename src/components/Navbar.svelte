@@ -1,16 +1,22 @@
 <script>
   import CustomButton from "./CustomButton.svelte";
   import ThemeToggle from "./ThemeToggle.svelte";
+  import { t } from '../i18n/translations.js' // ajustez le chemin
 
-  export let locale = 'fr'; // Nouvelle prop pour recevoir la langue depuis la page
-  export let links = [{}];
+  export let locale = 'fr';
+  export let links = []; // On va les générer dynamiquement
   export let kickstarter = {
-    label: "KICKSTARTER",
+    label: "",
     href: "/",
   };
 
   // Détection automatique de la langue active
   $: activeLang = locale === 'en' ? 'EN' : 'FR';
+  
+  // Génération des liens avec traductions
+  $: navigationLinks = [
+    
+  ];
   
   const languages = ["FR", "EN"];
 
@@ -18,16 +24,13 @@
     return lang === activeLang;
   }
 
-  // Fonction toggle simplifiée - fonctionne sur n'importe quel clic
   function toggleLanguage() {
     const currentPath = window.location.pathname;
     let newPath;
 
     if (currentPath.startsWith('/en')) {
-      // Actuellement en anglais, passer en français
       newPath = currentPath.replace('/en', '') || '/';
     } else {
-      // Actuellement en français, passer en anglais
       newPath = currentPath === '/' ? '/en' : `/en${currentPath}`;
     }
 
@@ -38,17 +41,17 @@
 <nav class="navbar">
   <!-- Logo -->
   <div class="logo">
-    <img src="/assets/logo.png" alt="Logo" />
+    <img src="/assets/logo.png" alt={t('nav.logo_alt', locale)} />
   </div>
 
   <!-- Menu -->
   <div class="menu">
-    {#each links as link}
+    {#each (links.length > 0 ? links : navigationLinks) as link}
       <a href={link.href} class="nav-link">{link.label}</a>
     {/each}
 
     <CustomButton
-      label={kickstarter.label}
+      label={kickstarter.label || t('nav.kickstarter', locale)}
       link={kickstarter.href}
       newTab={true}
       size="143px"
@@ -56,7 +59,7 @@
       backgroundSvg="/assets/images/button-154x47.svg"
     />
 
-    <!-- Switch de langues - un seul bouton cliquable -->
+    <!-- Switch de langues -->
     <div 
       class="language-switch"
       on:click={toggleLanguage}
@@ -76,6 +79,7 @@
   </div>
 </nav>
 
+<!-- Le CSS reste identique -->
 <style>
   nav.navbar {
     position: fixed;
@@ -127,7 +131,7 @@
 
   .language-switch .active {
     font-weight: bold;
-    color: #9e3ffa; /* Couleur violette pour la langue active */
+    color: #9e3ffa;
     text-shadow: 0 0 8px rgba(158, 63, 250, 0.5);
   }
 
