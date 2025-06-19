@@ -42,10 +42,10 @@ export const ANIMATION_CONFIG = {
     disappearDepth: 150
   },
 
-  // === FRAGMENTS AMÉLIORÉS ===
+  // === FRAGMENTS ===
   fragments: {
     count: 18,
-    sizeRange: { min: 8, max: 20 }, // Plus gros
+    sizeRange: { min: 8, max: 20 },
     velocityRange: { x: 300, y: 200 },
     color: "#6D09CE",
     gravity: 0.5,
@@ -62,8 +62,8 @@ export const ANIMATION_CONFIG = {
   zIndex: {
     overlay: 100,
     character: 101,
-    fragmentsBehind: 100, // Derrière le personnage
-    fragmentsFront: 102,  // Devant le personnage
+    fragmentsBehind: 100,
+    fragmentsFront: 102,
     behindSection2: 1
   }
 };
@@ -82,7 +82,6 @@ export function createFragments() {
     startX: (Math.random() - 0.5) * 100,
     startY: (Math.random() - 0.5) * 50,
     type: Math.random() < 0.7 ? 'triangle' : 'square',
-    // Z-index aléatoire : devant ou derrière le personnage
     zLayer: Math.random() < 0.5 ? 'behind' : 'front'
   }));
 }
