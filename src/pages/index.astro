@@ -2,13 +2,14 @@
 import Description from "components/Description.svelte";
 import Features from "components/Features.svelte";
 import Footer from "components/Footer.svelte";
-import Ground from "components/Ground.svelte";
+import AnimationOverlay from "components/AnimationOverlay.svelte";
 import Hero from "components/Hero.svelte";
 import BaseLayout from "layouts/BaseLayout.astro";
 import ScrollRestoration from "components/ScrollRestoration.svelte";
 import Navbar from "components/Navbar.svelte";
 import SectionExplain from "components/SectionExplain.svelte";
 import SectionExplain2 from "components/SectionExplain2.svelte";
+import SectionExplain3 from "components/SectionExplain3.svelte";
 ---
 
 <BaseLayout title="SpinBack - Site Officiel">
@@ -20,9 +21,10 @@ import SectionExplain2 from "components/SectionExplain2.svelte";
   <!-- <SectionExplain client:load /> -->
   <SectionExplain client:load />
   <SectionExplain2 client:load />
+  <SectionExplain3 client:load />
   
   <!-- <Features /> -->
-  <Ground client:load />
+  <AnimationOverlay client:load />
   <!-- <Description /> -->
   <!-- <Guy client:load/> -->
   <Footer />

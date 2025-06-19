@@ -3,7 +3,7 @@
 </script>
 
 <div
-  class="flex flex-col justify-center items-center gap-6 self-stretch bg-gradient-to-b from-[#1c0b3f] via-[#1c0b3f] to-[#491da5] to-175%"
+  class="section-1 flex flex-col justify-center items-center gap-6 self-stretch bg-gradient-to-b from-[#1c0b3f] via-[#1c0b3f] to-[#491da5] to-175%"
   style="padding: {padding}"
 >
   <p
