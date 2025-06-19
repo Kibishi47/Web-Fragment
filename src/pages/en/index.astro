@@ -11,26 +11,21 @@ import SectionGameplay from "components/SectionGameplay.svelte";
 import SectionTrailer from "components/SectionTrailer.svelte";
 import BaseLayout from "layouts/BaseLayout.astro";
 
-
-const locale = 'fr'
+const locale = 'en'
 ---
 
-<BaseLayout title="SpinBack - Site Officiel">
+<BaseLayout title="SpinBack - Official Website">
   <ScrollRestoration client:load />
 
   <Navbar {locale} client:load />
   <Hero {locale} client:load />
 
-  <!-- <SectionExplain client:load /> -->
   <SectionExplain {locale} client:load />
   <SectionExplain2 {locale} client:load />
   <SectionTrailer {locale} client:load />
   <SectionGameplay {locale} client:load />
   <SectionEvent {locale} client:load />
   
-  <!-- <Features /> -->
-  <AnimationOverlay {locale} client:load />
-  <!-- <Description /> -->
-  <!-- <Guy client:load/> -->
+  <AnimationOverlay client:load />
   <Footer {locale} />
 </BaseLayout>

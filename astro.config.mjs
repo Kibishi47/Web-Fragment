@@ -14,5 +14,12 @@ export default defineConfig({
         'layouts': '/src/layouts',
       }
     }
+  },
+  i18n: {
+    defaultLocale: "fr",
+    locales: ["fr", "en"],
+    routing: {
+      prefixDefaultLocale: false
+    }
   }
 });

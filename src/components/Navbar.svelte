@@ -3,7 +3,6 @@
   import ThemeToggle from "./ThemeToggle.svelte";
 
   export let links = [{}]; // [{ label: "ACCUEIL", href: "/" }]
-
   export let kickstarter = {
     label: "KICKSTARTER",
     href: "/",
@@ -14,6 +13,28 @@
 
   function isActive(lang) {
     return lang === activeLang;
+  }
+
+  // Nouvelle fonction pour changer de langue
+  function switchLanguage(lang) {
+    const currentPath = window.location.pathname;
+    let newPath;
+
+    if (lang === "EN") {
+      // Passer en anglais
+      if (currentPath.startsWith('/en')) {
+        return; // Déjà en anglais
+      }
+      newPath = currentPath === '/' ? '/en' : `/en${currentPath}`;
+    } else {
+      // Passer en français
+      if (!currentPath.startsWith('/en')) {
+        return; // Déjà en français
+      }
+      newPath = currentPath.replace('/en', '') || '/';
+    }
+
+    window.location.href = newPath;
   }
 </script>
 
@@ -45,7 +66,13 @@
     <!-- Switch de langues -->
     <div class="language-switch">
       {#each languages as lang, i}
-        <span class={isActive(lang) ? "active" : "inactive"}>
+        <span 
+          class={isActive(lang) ? "active" : "inactive"}
+          on:click={() => switchLanguage(lang)}
+          on:keydown={(e) => e.key === 'Enter' && switchLanguage(lang)}
+          role="button"
+          tabindex="0"
+        >
           {lang}
         </span>
         {#if i < languages.length - 1}
@@ -56,6 +83,7 @@
   </div>
 </nav>
 
+<!-- Le CSS reste identique -->
 <style>
   nav.navbar {
     position: fixed;

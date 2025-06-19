@@ -1,5 +1,7 @@
 <script>
+  import { t } from '../i18n/translations.js'
   export let padding = "110px";
+  export let locale = 'fr';
 </script>
 
 <div
@@ -9,12 +11,11 @@
   <p
     class="self-stretch text-center text-[#9e3ffa] font-['Salted'] text-[22px] font-normal"
   >
-    qu'est-ce que spinback ?
+    {t('s1.spinback.what', locale)}
   </p>
   <h1
     class="self-stretch text-center text-white font-['Salted'] text-2xl sm:text-3xl md:text-[32px] font-normal"
   >
-    Spinback est un jeu d'enquête interactif où vous explorez la mémoire
-    collective d'une soirée étudiante qui vole en éclats.
+    {t('s1.spinback.description', locale)}
   </h1>
 </div>
