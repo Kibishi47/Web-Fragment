@@ -1,11 +1,14 @@
 <script>
-  export let title = "TRAILER";
-  export let videoSrc = ""; // URL de la vidéo ou iframe
-  export let posterImage = ""; // Image de prévisualisation
+  import { t } from '../i18n/translations.js' // ajustez le chemin
+  
+  export let locale = 'fr' // nouvelle prop
+  export let title = ""; // On va utiliser la traduction maintenant
+  export let videoSrc = ""; 
+  export let posterImage = "";
   export let backgroundColor = "#0B0B1A";
   export let titleColor = "#ffffff";
   export let padding = "80px 40px";
-  export let aspectRatio = "16/9"; // Ratio de la vidéo
+  export let aspectRatio = "16/9";
 </script>
 
 <section 
@@ -18,7 +21,7 @@
       class="trailer-title"
       style="color: {titleColor};"
     >
-      {title}
+      {title || t('s3.trailer.title', locale)}
     </h2>
     
     <!-- Conteneur vidéo -->
@@ -31,7 +34,7 @@
         {#if videoSrc.includes('youtube') || videoSrc.includes('vimeo')}
           <iframe
             src={videoSrc}
-            title="Trailer vidéo"
+            title={t('s3.trailer.iframe_title', locale)}
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
@@ -44,18 +47,18 @@
             preload="metadata"
           >
             <source src={videoSrc} type="video/mp4">
-            <p>Votre navigateur ne supporte pas la lecture de vidéos.</p>
+            <p>{t('s3.trailer.video_not_supported', locale)}</p>
           </video>
         {/if}
       {:else}
         <!-- Placeholder si pas de vidéo -->
         <div class="video-placeholder">
           {#if posterImage}
-            <img src={posterImage} alt="Aperçu du trailer" />
+            <img src={posterImage} alt={t('s3.trailer.preview_alt', locale)} />
           {:else}
             <div class="placeholder-content">
               <div class="play-icon">▶</div>
-              <p>Trailer à venir</p>
+              <p>{t('s3.trailer.coming_soon', locale)}</p>
             </div>
           {/if}
         </div>
@@ -64,6 +67,7 @@
   </div>
 </section>
 
+<!-- Le CSS reste identique -->
 <style>
   .trailer-section {
     width: 100%;
@@ -142,7 +146,6 @@
     opacity: 0.8;
   }
 
-  /* Responsive */
   @media (max-width: 768px) {
     .trailer-title {
       text-align: center;
