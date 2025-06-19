@@ -7,19 +7,6 @@ export const ANIMATION_CONFIG = {
     section2: ".section-2"
   },
 
-  // === DIMENSIONS DU PERSONNAGE ===
-  character: {
-    width: 200,
-    height: 200,
-    heroPosition: 75, // Plus bas dans le hero (75% au lieu de 50%)
-    image: "/assets/images/guy.png"
-  },
-
-  // === VITESSE DE CHUTE ===
-  fallSpeed: {
-    scrollMultiplier: 0.6 // 60% de la vitesse du scroll (plus rapide que 30%)
-  },
-
   // === TIMING AJUSTÉ ===
   phases: {
     fallEnd: 0.5,
@@ -27,12 +14,42 @@ export const ANIMATION_CONFIG = {
     disappearEnd: 1.0
   },
 
-  // === FRAGMENTS ===
+  // === DÉCLENCHEMENT DU SCROLL ===
+  trigger: {
+    start: "top bottom",
+    scrub: 1,
+    markers: true
+  },
+
+  // === DIMENSIONS DU PERSONNAGE ===
+  character: {
+    width: 200,
+    height: 200,
+    heroPosition: 75,
+    image: "/assets/images/guy.png"
+  },
+
+  // === VITESSE DE CHUTE ===
+  fallSpeed: {
+    scrollMultiplier: 0.6
+  },
+
+  // === PHYSIQUE DE L'ANIMATION ===
+  physics: {
+    bounceHeight: 40,
+    fallEasing: "power2.in",
+    bounceEasing: "elastic.out(1, 0.4)",
+    disappearDepth: 150
+  },
+
+  // === FRAGMENTS AMÉLIORÉS ===
   fragments: {
-    count: 15,
-    sizeRange: { min: 12, max: 35 },
-    velocityRange: { x: 400, y: 250 },
-    colors: ["#444", "#555", "#666", "#777"]
+    count: 18,
+    sizeRange: { min: 8, max: 20 }, // Plus gros
+    velocityRange: { x: 300, y: 200 },
+    color: "#6D09CE",
+    gravity: 0.5,
+    friction: 0.98
   },
 
   // === RESPONSIVE ===
@@ -45,7 +62,8 @@ export const ANIMATION_CONFIG = {
   zIndex: {
     overlay: 100,
     character: 101,
-    fragments: 102,
+    fragmentsBehind: 100, // Derrière le personnage
+    fragmentsFront: 102,  // Devant le personnage
     behindSection2: 1
   }
 };
@@ -55,12 +73,17 @@ export function createFragments() {
   
   return Array.from({ length: config.count }, (_, i) => ({
     id: i,
-    width: Math.random() * (config.sizeRange.max - config.sizeRange.min) + config.sizeRange.min,
-    height: Math.random() * 20 + 8,
+    size: Math.random() * (config.sizeRange.max - config.sizeRange.min) + config.sizeRange.min,
     xVelocity: (Math.random() - 0.5) * config.velocityRange.x,
-    yVelocity: -(Math.random() * config.velocityRange.y + 100),
-    rotation: Math.random() * 720 - 360,
-    color: config.colors[Math.floor(Math.random() * config.colors.length)]
+    yVelocity: -(Math.random() * config.velocityRange.y + 50),
+    rotation: Math.random() * 360,
+    rotationSpeed: (Math.random() - 0.5) * 10,
+    color: config.color,
+    startX: (Math.random() - 0.5) * 100,
+    startY: (Math.random() - 0.5) * 50,
+    type: Math.random() < 0.7 ? 'triangle' : 'square',
+    // Z-index aléatoire : devant ou derrière le personnage
+    zLayer: Math.random() < 0.5 ? 'behind' : 'front'
   }));
 }
 

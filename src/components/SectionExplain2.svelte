@@ -13,7 +13,7 @@
 </script>
 
 <section 
-  class="section-2 relative w-full overflow-hidden bg-gradient-to-b from-[#AA53FFB2] to-[#6a09c9] z-20" 
+  class="section-2 relative w-full overflow-hidden bg-gradient-to-b from-[#7f3dc5] to-[#6a09c9] z-20" 
   style="padding: {padding}; height: {sectionHeight};">
   <div class="mx-auto flex flex-col md:flex-row justify-between h-full"
        style="gap: {columnGap}; align-items: {alignItems};">

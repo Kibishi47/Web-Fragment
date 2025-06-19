@@ -7,6 +7,25 @@
   let character, fragmentsContainer;
   let fragments = createFragments();
   let currentScale = 1;
+  let fragmentsTriggered = false;
+  let fragmentsAbsolutePosition = null;
+
+  function resetFragments() {
+    // Réinitialiser l'état des fragments
+    fragmentsTriggered = false;
+    fragmentsAbsolutePosition = null;
+    
+    // Cacher tous les fragments
+    gsap.set(".fragment", {
+      opacity: 0,
+      x: 0,
+      y: 0,
+      rotation: 0,
+      scale: 1
+    });
+    
+    console.log('🔄 FRAGMENTS RÉINITIALISÉS');
+  }
 
   function setupAnimation() {
     gsap.registerPlugin(ScrollTrigger);
@@ -43,18 +62,22 @@
 
     gsap.set(fragmentsContainer, {
       position: 'fixed',
-      zIndex: config.zIndex.fragments,
+      zIndex: config.zIndex.fragmentsFront,
       visibility: 'visible'
     });
 
     ScrollTrigger.create({
       trigger: config.selectors.hero,
       start: "top center",
-      end: () => `${section2.offsetTop + 400}px center`, // Plus de distance pour plus de chute
+      end: () => `${section2.offsetTop + 600}px center`,
       scrub: 1,
       markers: true,
       onUpdate: (self) => {
         animatePhases(self.progress);
+      },
+      onLeaveBack: () => {
+        // Quand on remonte au-dessus du trigger, réinitialiser
+        resetFragments();
       }
     });
   }
@@ -69,132 +92,111 @@
 
     const heroTop = hero.offsetTop;
     const heroHeight = hero.offsetHeight;
-    const section2Top = section2.offsetTop;
     const section2Rect = section2.getBoundingClientRect();
     
-    // Position de départ dans le hero
     const startY = heroTop + (heroHeight * config.character.heroPosition / 100);
-    
-    // Le personnage suit le scroll mais plus lentement
     const scrollOffset = window.pageYOffset;
     const characterY = startY - scrollOffset + (scrollOffset * config.fallSpeed.scrollMultiplier);
+    const hasCollided = progress >= 0.6;
 
-    // Collision plus tard dans l'animation
-    const hasCollided = progress >= 0.6; // 60% au lieu de 50%
+    // Fade du personnage après 80%
+    let characterOpacity = 1;
+    if (progress >= 0.8) {
+      const fadeProgress = (progress - 0.8) / 0.2;
+      characterOpacity = Math.max(0, 1 - fadeProgress);
+    }
 
-    console.log(`Progress: ${progress.toFixed(2)} | CharY: ${characterY.toFixed(0)} | Collided: ${hasCollided}`);
+    // RÉINITIALISER LES FRAGMENTS SI ON REVIENT EN ARRIÈRE
+    if (progress < 0.6 && fragmentsTriggered) {
+      resetFragments();
+    }
+
+    console.log(`Progress: ${progress.toFixed(2)} | CharY: ${characterY.toFixed(0)} | Opacity: ${characterOpacity.toFixed(2)} | Collided: ${hasCollided} | FragTriggered: ${fragmentsTriggered}`);
 
     if (!hasCollided) {
-      // PHASE 1: Chute libre plus longue
+      // PHASE 1: Chute libre
       gsap.set(character, { 
         y: characterY, 
-        opacity: 1,
+        opacity: characterOpacity,
         visibility: 'visible',
         zIndex: config.zIndex.character
       });
       
-      gsap.set(".fragment", { 
-        opacity: 0
-      });
+      // S'assurer que les fragments sont cachés
+      if (!fragmentsTriggered) {
+        gsap.set(".fragment", { 
+          opacity: 0
+        });
+      }
       
       console.log(`🔽 CHUTE LIBRE`);
       
     } else {
-      // COLLISION DÉTECTÉE à 60%
-      const collisionProgress = (progress - 0.6) / 0.4; // 0 à 1 de 60% à 100%
+      // PHASE 2: Collision
       
-      // POSITIONNER LES FRAGMENTS
-      gsap.set(fragmentsContainer, {
-        left: "50%",
-        top: section2Rect.top + "px",
-        xPercent: -50,
-        yPercent: 0
+      // Déclencher les fragments une seule fois
+      if (!fragmentsTriggered) {
+        fragmentsTriggered = true;
+        // Position absolue au moment de l'impact
+        fragmentsAbsolutePosition = {
+          x: window.innerWidth / 2,
+          y: section2Rect.top + scrollOffset
+        };
+        console.log('🎆 FRAGMENTS DÉCLENCHÉS ! Position:', fragmentsAbsolutePosition);
+      }
+      
+      const collisionProgress = (progress - 0.6) / 0.4;
+      
+      // POSITIONNER LE CONTENEUR
+      if (fragmentsAbsolutePosition) {
+        const currentScrollOffset = window.pageYOffset;
+        const fragmentsScreenY = fragmentsAbsolutePosition.y - currentScrollOffset;
+        
+        gsap.set(fragmentsContainer, {
+          left: fragmentsAbsolutePosition.x + "px",
+          top: fragmentsScreenY + "px",
+          xPercent: -50,
+          yPercent: 0
+        });
+      }
+      
+      // Le personnage continue sa chute
+      gsap.set(character, { 
+        y: characterY,
+        opacity: characterOpacity,
+        visibility: 'visible',
+        zIndex: progress >= 0.7 ? config.zIndex.behindSection2 : config.zIndex.character
       });
       
-      if (collisionProgress <= 0.3) {
-        // PHASE 2A: Impact initial - fragments éclatent SEULEMENT maintenant
-        const impactScreenY = section2Rect.top - (config.character.height * currentScale);
-        const transitionY = characterY + (impactScreenY - characterY) * (collisionProgress / 0.3);
-        const slowY = transitionY + (15 * currentScale * (collisionProgress / 0.3)); // Ralentissement plus subtil
-        
-        gsap.set(character, { 
-          y: slowY, 
-          opacity: 1,
-          visibility: 'visible',
-          zIndex: config.zIndex.character
-        });
-        
-        // FRAGMENTS ÉCLATENT MAINTENANT (pas avant)
+      // ANIMATION DES FRAGMENTS
+      if (fragmentsTriggered && fragmentsAbsolutePosition) {
         fragments.forEach((fragment, index) => {
+          const time = collisionProgress * 3;
+          
+          let x = fragment.startX + fragment.xVelocity * time;
+          let y = fragment.startY + fragment.yVelocity * time + (config.fragments.gravity * time * time * 50);
+          
+          const friction = Math.pow(config.fragments.friction, time * 60);
+          x *= friction;
+          
+          const rotation = fragment.rotation + fragment.rotationSpeed * time * 60;
+          const opacity = collisionProgress >= 0.5 ? Math.max(0, 1 - ((collisionProgress - 0.5) / 0.5) * 0.8) : 1;
+          
+          const zIndex = fragment.zLayer === 'front' ? config.zIndex.fragmentsFront : config.zIndex.fragmentsBehind;
+          
           gsap.set(`.fragment:nth-child(${index + 1})`, {
-            opacity: 1,
+            opacity: opacity,
             visibility: 'visible',
-            x: fragment.xVelocity * (collisionProgress / 0.3) * currentScale * 0.3,
-            y: fragment.yVelocity * (collisionProgress / 0.3) * currentScale * 0.3,
-            rotation: fragment.rotation * (collisionProgress / 0.3),
-            scale: 2,
-            backgroundColor: fragment.color
+            x: x * currentScale,
+            y: y * currentScale,
+            rotation: rotation,
+            scale: Math.max(0.5, 1 - collisionProgress * 0.3),
+            zIndex: zIndex
           });
         });
-        
-        console.log(`💥 IMPACT! Progress: ${collisionProgress.toFixed(2)}`);
-        
-      } else if (collisionProgress <= 0.7) {
-        // PHASE 2B: Le personnage continue à tomber après l'impact
-        const continueProgress = (collisionProgress - 0.3) / 0.4; // 0 à 1 de 30% à 70%
-        const impactScreenY = section2Rect.top - (config.character.height * currentScale);
-        const continueFallY = impactScreenY + 15 * currentScale + (80 * currentScale * continueProgress);
-        
-        gsap.set(character, { 
-          y: continueFallY, 
-          opacity: 1,
-          visibility: 'visible',
-          zIndex: config.zIndex.character // Reste visible
-        });
-        
-        // Fragments continuent leur mouvement
-        fragments.forEach((fragment, index) => {
-          gsap.set(`.fragment:nth-child(${index + 1})`, {
-            opacity: 1,
-            visibility: 'visible',
-            x: fragment.xVelocity * (1 + continueProgress * 0.5) * currentScale * 0.3,
-            y: fragment.yVelocity * (1 + continueProgress * 0.5) * currentScale * 0.3,
-            rotation: fragment.rotation * (1 + continueProgress * 0.5),
-            scale: 2,
-            backgroundColor: fragment.color
-          });
-        });
-        
-        console.log(`⬇️ CHUTE CONTINUE! Progress: ${continueProgress.toFixed(2)}`);
-        
-      } else {
-        // PHASE 2C: Disparition finale
-        const fadeProgress = (collisionProgress - 0.7) / 0.3; // 0 à 1 de 70% à 100%
-        const impactScreenY = section2Rect.top - (config.character.height * currentScale);
-        const finalY = impactScreenY + 95 * currentScale + (50 * currentScale * fadeProgress);
-        
-        gsap.set(character, { 
-          y: finalY, 
-          opacity: Math.max(0, 1 - fadeProgress * 2),
-          visibility: 'visible',
-          zIndex: config.zIndex.behindSection2 // Passe derrière maintenant
-        });
-        
-        // Fragments disparaissent
-        fragments.forEach((fragment, index) => {
-          gsap.set(`.fragment:nth-child(${index + 1})`, {
-            opacity: Math.max(0, 1 - fadeProgress * 0.8),
-            visibility: 'visible',
-            x: fragment.xVelocity * (1.5 + fadeProgress * 0.3) * currentScale * 0.3,
-            y: fragment.yVelocity * (1.5 + fadeProgress * 0.3) * currentScale * 0.3,
-            rotation: fragment.rotation * (1.5 + fadeProgress),
-            scale: Math.max(1, 2 - fadeProgress),
-            backgroundColor: fragment.color
-          });
-        });
-        
-        console.log(`👻 DISPARITION! Fade: ${fadeProgress.toFixed(2)}`);
       }
+      
+      console.log(`💥 COLLISION! CollisionProgress: ${collisionProgress.toFixed(2)}`);
     }
   }
 
@@ -207,6 +209,8 @@
 
     const handleResize = () => {
       currentScale = getResponsiveScale();
+      // Réinitialiser les fragments lors du resize
+      resetFragments();
       ScrollTrigger.refresh();
     };
 
@@ -229,13 +233,8 @@
   <div bind:this={fragmentsContainer} class="fragments-container">
     {#each fragments as fragment}
       <div 
-        class="fragment"
-        style="
-          width: {fragment.width}px;
-          height: {fragment.height}px;
-          background-color: {fragment.color};
-          border: 2px solid #ff0000;
-        "
+        class="fragment {fragment.type} {fragment.zLayer}"
+        style="--size: {fragment.size}px;"
       ></div>
     {/each}
   </div>
@@ -263,13 +262,40 @@
   .fragments-container {
     position: fixed;
     pointer-events: none;
-    z-index: 102;
   }
 
   .fragment {
     position: absolute;
     transform: translate(-50%, -50%);
-    border-radius: 2px;
     visibility: visible;
+  }
+
+  .triangle {
+    width: 0;
+    height: 0;
+    border-left: calc(var(--size) * 0.5) solid transparent;
+    border-right: calc(var(--size) * 0.5) solid transparent;
+    border-bottom: var(--size) solid #6D09CE;
+    filter: drop-shadow(0 2px 4px rgba(109, 9, 206, 0.4));
+  }
+
+  .square {
+    width: var(--size);
+    height: var(--size);
+    background: #6D09CE;
+    border-radius: 2px;
+    filter: drop-shadow(0 2px 4px rgba(109, 9, 206, 0.4));
+  }
+
+  .triangle:nth-child(3n) {
+    border-bottom: none;
+    border-top: var(--size) solid #6D09CE;
+  }
+
+  .triangle:nth-child(5n) {
+    border-left: var(--size) solid #6D09CE;
+    border-top: calc(var(--size) * 0.5) solid transparent;
+    border-bottom: calc(var(--size) * 0.5) solid transparent;
+    border-right: none;
   }
 </style>
