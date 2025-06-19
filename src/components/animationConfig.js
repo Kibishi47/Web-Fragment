@@ -18,14 +18,14 @@ export const ANIMATION_CONFIG = {
   trigger: {
     start: "top bottom",
     scrub: 1,
-    markers: true
+    markers: false
   },
 
   // === DIMENSIONS DU PERSONNAGE ===
   character: {
-    width: 200,
-    height: 200,
-    heroPosition: 75,
+    width: 300,
+    height: 300,
+    heroPosition: 65,
     image: "/assets/images/guy.png"
   },
 

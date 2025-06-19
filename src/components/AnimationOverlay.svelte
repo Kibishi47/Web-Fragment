@@ -54,7 +54,7 @@
       start: "top center",
       end: () => `${section2.offsetTop + 600}px center`,
       scrub: 1,
-      markers: true,
+      markers: false,
       onUpdate: (self) => {
         animatePhases(self.progress);
       }
