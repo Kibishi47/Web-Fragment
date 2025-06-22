@@ -1,10 +1,10 @@
 <script>
   import CustomButton from "./CustomButton.svelte";
   import ThemeToggle from "./ThemeToggle.svelte";
-  import { t } from '../i18n/translations.js' // ajustez le chemin
+  import { t } from '../i18n/translations.js'
 
   export let locale = 'fr';
-  export let links = []; // On va les générer dynamiquement
+  export let links = [];
   export let kickstarter = {
     label: "",
     href: "/",
@@ -38,10 +38,10 @@
   }
 </script>
 
-<nav class="navbar">
+<nav class="navbar font-salted">
   <!-- Logo -->
   <div class="logo">
-    <img src="/assets/images/LogoNav.svg" alt={t('nav.logo_alt', locale)} />
+    <img src="/assets/images/LogoNav.svg" alt={t('nav.logo_alt', locale)} class="h-12" />
   </div>
 
   <!-- Menu -->
@@ -54,8 +54,10 @@
       label={kickstarter.label || t('nav.kickstarter', locale)}
       link={kickstarter.href}
       newTab={true}
-      size="143px"
-      fontSize="18px"
+      width="w-auto"
+      fontSize="text-lg"
+      paddingX="px-4"
+      paddingY="py-2"
       backgroundSvg="/assets/images/button-154x47.svg"
       hoverBackgroundSvg="/assets/images/button-hover-154x47.svg"
     />
@@ -80,7 +82,6 @@
   </div>
 </nav>
 
-<!-- Le CSS reste identique -->
 <style>
   nav.navbar {
     position: fixed;
@@ -94,10 +95,6 @@
     z-index: 5000;
   }
 
-  .logo img {
-    height: 50px;
-  }
-
   .menu {
     display: flex;
     align-items: center;
@@ -105,14 +102,14 @@
   }
 
   .nav-link {
-    color: white;
+    color: var(--text-white);
     text-decoration: none;
     font-size: 1.2rem;
     transition: color 0.3s ease;
   }
 
   .nav-link:hover {
-    color: #cccccc;
+    color: var(--muted);
   }
 
   .language-switch {
@@ -132,7 +129,7 @@
 
   .language-switch .active {
     font-weight: bold;
-    color: #9e3ffa;
+    color: var(--color-primary);
     text-shadow: 0 0 8px rgba(158, 63, 250, 0.5);
   }
 

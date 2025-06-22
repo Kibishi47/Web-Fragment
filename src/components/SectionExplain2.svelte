@@ -16,7 +16,7 @@
 </script>
 
 <section 
-  class="relative w-full overflow-hidden bg-gradient-section-2 z-20 font-salted" 
+  class="section-2 relative w-full overflow-hidden bg-gradient-section-2 z-20 font-salted" 
   style="padding: {padding}; height: {sectionHeight};"
 >
   <!-- Version Desktop -->

@@ -9,8 +9,8 @@ export const ANIMATION_CONFIG = {
 
   // === TIMING AJUSTÉ ===
   phases: {
-    fallEnd: 0.5,
-    impactEnd: 0.7,
+    fallEnd: 0.1,
+    impactEnd: 0.2,
     disappearEnd: 1.0
   },
 
@@ -25,13 +25,13 @@ export const ANIMATION_CONFIG = {
   character: {
     width: 300,
     height: 300,
-    heroPosition: 65,
+    heroPosition: 70,
     image: "/assets/images/guy.png"
   },
 
   // === VITESSE DE CHUTE ===
   fallSpeed: {
-    scrollMultiplier: 0.6
+    scrollMultiplier: 0.5
   },
 
   // === PHYSIQUE DE L'ANIMATION ===

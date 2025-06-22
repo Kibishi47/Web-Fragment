@@ -1,8 +1,8 @@
 <script>
   import CustomButton from './CustomButton.svelte';
-  import { t } from '../i18n/translations.js' // ajustez le chemin
+  import { t } from '../i18n/translations.js'
 
-  export let locale = 'fr'; // nouvelle prop
+  export let locale = 'fr';
   export let date = "";
   export let month = "";
   export let year = "";
@@ -12,18 +12,18 @@
   export let buttonLink = "#";
   export let buttonBackgroundSvg = "/assets/images/button-198x86.svg";
   export let buttonHoverBackgroundSvg = "/assets/images/button-hover-198x86.svg";
-  export let buttonFontSize = "32px";
-  export let buttonPaddingX = "24px";
-  export let buttonPaddingY = "16px";
-  export let backgroundColor = "#0b0b1a";
-  export let circleColor = "#ff1493";
-  export let subtitleColor = "#ff1493";
-  export let titleColor = "#ffffff";
+  export let buttonFontSize = "text-32";
+  export let buttonPaddingX = "px-6";
+  export let buttonPaddingY = "py-4";
+  export let backgroundColor = "var(--bg-trailer)";
+  export let circleColor = "var(--color-secondary)";
+  export let subtitleColor = "var(--color-secondary)";
+  export let titleColor = "var(--text-white)";
   export let padding = "py-24 px-16";
 </script>
 
 <section 
-  class="w-full min-h-screen flex items-center justify-center relative overflow-hidden {padding}"
+  class="w-full min-h-screen flex items-center justify-center relative overflow-hidden font-salted {padding}"
   style="background-color: {backgroundColor};"
 >
   <div class="w-full flex justify-center px-4 md:px-10">
@@ -31,7 +31,7 @@
       <div class="flex flex-col md:flex-row items-center gap-8 md:gap-16 animate-fade-in-up">
         <!-- Cercle avec la date -->
         <div 
-          class="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80 rounded-full flex items-center justify-center flex-shrink-0 animate-pulse-glow"
+          class="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80 rounded-full flex items-center justify-center flex-shrink-0 animate-pulse-glow font-salted"
           style="background-color: {circleColor}; box-shadow: 0 0 80px rgba(255, 20, 147, 0.4);"
         >
           <div class="text-center text-white font-bold leading-tight w-full p-3 sm:p-4 md:p-5">
@@ -50,14 +50,14 @@
         <!-- Contenu texte et bouton -->
         <div class="flex-1 max-w-lg text-center md:text-left">
           <p 
-            class="text-sm md:text-base font-semibold mb-4 tracking-widest uppercase animate-slide-in-right"
+            class="text-sm md:text-base font-semibold mb-4 tracking-widest uppercase animate-slide-in-right font-salted"
             style="color: {subtitleColor}; animation-delay: 0.3s; animation-fill-mode: both;"
           >
             {subtitle || t('s5.event.subtitle', locale)}
           </p>
           
           <h2 
-            class="text-xl sm:text-2xl md:text-3xl lg:text-3xl font-black mb-8 md:mb-10 tracking-wide uppercase leading-tight animate-slide-in-right"
+            class="text-xl sm:text-2xl md:text-3xl lg:text-3xl font-black mb-8 md:mb-10 tracking-wide uppercase leading-tight animate-slide-in-right font-salted"
             style="color: {titleColor}; animation-delay: 0.5s; animation-fill-mode: both;"
           >
             {title || t('s5.event.title', locale)}
@@ -84,7 +84,6 @@
   </div>
 </section>
 
-<!-- Le CSS reste identique -->
 <style>
   @keyframes fade-in-up {
     from {

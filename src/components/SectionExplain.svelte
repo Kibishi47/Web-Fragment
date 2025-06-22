@@ -5,14 +5,14 @@
 </script>
 
 <div
-  class="flex flex-col justify-center items-center gap-6 self-stretch bg-gradient-section-1"
+  class="section-1 flex flex-col justify-center items-center gap-6 self-stretch bg-gradient-section-1"
   style="padding: {padding}"
 >
   <p class="self-stretch text-center text-primary font-salted text-22 font-normal">
     {t('s1.spinback.what', locale)}
   </p>
   
-  <h1 class="self-stretch text-center text-white font-salted text-2xl sm:text-3xl md:text-32 font-normal">
+  <h2 class="font-salted text-4xl md:text-4xl lg:text-5xl font-normal leading-tight text-center m-0">
     {t('s1.spinback.description', locale)}
-  </h1>
+  </h2>
 </div>
