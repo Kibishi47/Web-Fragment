@@ -11,7 +11,7 @@
   export let buttonText = "";
   export let buttonLink = "#";
   export let buttonBackgroundSvg = "/assets/images/button-198x86.svg";
-  export let buttonHoverBackgroundSvg = null;
+  export let buttonHoverBackgroundSvg = "/assets/images/button-hover-198x86.svg";
   export let buttonFontSize = "32px";
   export let buttonPaddingX = "24px";
   export let buttonPaddingY = "16px";

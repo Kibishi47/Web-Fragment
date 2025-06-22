@@ -1,24 +1,24 @@
 <script>
-  import { t } from '../i18n/translations.js' // ajustez le chemin
+  import { t } from '../i18n/translations.js'
   
-  export let locale = 'fr' // nouvelle prop
-  export let title = ""; // On va utiliser la traduction maintenant
+  export let locale = 'fr'
+  export let title = "";
   export let videoSrc = ""; 
   export let posterImage = "";
-  export let backgroundColor = "#0B0B1A";
-  export let titleColor = "#ffffff";
-  export let padding = "80px 40px";
-  export let aspectRatio = "16/9";
+  export let backgroundColor = "var(--bg-trailer)";
+  export let titleColor = "var(--text-white)";
+  export let padding = "var(--padding-80-40)";
+  export let aspectRatio = "var(--aspect-ratio-16-9)";
 </script>
 
 <section 
-  class="trailer-section"
+  class="trailer-section font-salted"
   style="background-color: {backgroundColor}; padding: {padding};"
 >
   <div class="container">
     <!-- Titre -->
     <h2 
-      class="trailer-title"
+      class="trailer-title font-salted"
       style="color: {titleColor};"
     >
       {title || t('s3.trailer.title', locale)}
@@ -38,6 +38,7 @@
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
+            class="w-full h-full border-none block"
           ></iframe>
         {:else}
           <!-- Si c'est un fichier vidéo direct -->
@@ -45,20 +46,21 @@
             controls
             poster={posterImage}
             preload="metadata"
+            class="w-full h-full border-none block"
           >
             <source src={videoSrc} type="video/mp4">
-            <p>{t('s3.trailer.video_not_supported', locale)}</p>
+            <p class="font-salted">{t('s3.trailer.video_not_supported', locale)}</p>
           </video>
         {/if}
       {:else}
         <!-- Placeholder si pas de vidéo -->
         <div class="video-placeholder">
           {#if posterImage}
-            <img src={posterImage} alt={t('s3.trailer.preview_alt', locale)} />
+            <img src={posterImage} alt={t('s3.trailer.preview_alt', locale)} class="w-full h-full object-cover" />
           {:else}
             <div class="placeholder-content">
               <div class="play-icon">▶</div>
-              <p>{t('s3.trailer.coming_soon', locale)}</p>
+              <p class="font-salted">{t('s3.trailer.coming_soon', locale)}</p>
             </div>
           {/if}
         </div>
@@ -67,7 +69,6 @@
   </div>
 </section>
 
-<!-- Le CSS reste identique -->
 <style>
   .trailer-section {
     width: 100%;
@@ -75,7 +76,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #0B0B1A;
   }
 
   .container {
@@ -86,7 +86,6 @@
   }
 
   .trailer-title {
-    font-family: 'Salted', sans-serif;
     font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: normal;
     text-align: left;
@@ -97,19 +96,11 @@
 
   .video-container {
     width: 100%;
-    background: #000;
+    background: var(--bg-black);
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-video);
     position: relative;
-  }
-
-  .video-container iframe,
-  .video-container video {
-    width: 100%;
-    height: 100%;
-    border: none;
-    display: block;
   }
 
   .video-placeholder {
@@ -119,14 +110,8 @@
     align-items: center;
     justify-content: center;
     background: #1a1a1a;
-    color: #fff;
+    color: var(--text-white);
     position: relative;
-  }
-
-  .video-placeholder img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
 
   .placeholder-content {

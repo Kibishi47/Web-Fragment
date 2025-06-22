@@ -41,7 +41,7 @@
 <nav class="navbar">
   <!-- Logo -->
   <div class="logo">
-    <img src="/assets/logo.png" alt={t('nav.logo_alt', locale)} />
+    <img src="/assets/images/LogoNav.svg" alt={t('nav.logo_alt', locale)} />
   </div>
 
   <!-- Menu -->
@@ -57,6 +57,7 @@
       size="143px"
       fontSize="18px"
       backgroundSvg="/assets/images/button-154x47.svg"
+      hoverBackgroundSvg="/assets/images/button-hover-154x47.svg"
     />
 
     <!-- Switch de langues -->

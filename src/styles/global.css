@@ -1,21 +1,9 @@
 @import "tailwindcss";
 
-/* CSS Variables for theming */
+/* ===== CSS Variables - Dark Theme Constant ===== */
 :root {
-  /* Light theme (default) */
-  --background: #ffffff;
-  --foreground: #6d09ce;
-  --muted: #cccccc;
-  --accent: #3498db;
-  --accent-hover: #2980b9;
-  --border: #333333;
-  --card-bg: #111111;
-  --shadow: rgba(0, 0, 0, 0.3);
-}
-
-[data-theme="dark"] {
-  /* Dark theme */
-  --background: #6d09ce;
+  /* Theme principal (dark constant) */
+  --background: #1C0B3F;
   --foreground: #ffffff;
   --muted: #cccccc;
   --accent: #3498db;
@@ -23,9 +11,53 @@
   --border: #333333;
   --card-bg: #111111;
   --shadow: rgba(0, 0, 0, 0.3);
+
+  /* ===== COULEURS EXACTES DE VOS COMPOSANTS ===== */
+  --color-primary: #9e3ffa;
+  --color-primary-dark: #7f3dc5;
+  --color-primary-darker: #6a09c9;
+  --color-secondary: #ff5cbb;
+  --color-secondary-light: #ff8cd2;
+  
+  --bg-dark-primary: #1c0b3f;
+  --bg-dark-secondary: #491da5;
+  --bg-gameplay: #3a2a5c;
+  --bg-trailer: #0B0B1A;
+  --text-dark: #1C0B3F;
+  --text-white: #ffffff;
+  
+  /* ===== TAILLES DE POLICE EXACTES ===== */
+  --text-22: 22px;
+  --text-32: 32px;
+  
+  /* ===== PADDINGS EXACTS ===== */
+  --padding-110: 110px;
+  --padding-100-40: 100px 40px;
+  --padding-140-120: 140px 120px;
+  --padding-80-40: 80px 40px;
+  
+  /* ===== GAPS EXACTS ===== */
+  --gap-24: 24px;
+  --gap-80: 80px;
+  --gap-120: 120px;
+  --gap-124: 124px;
+  
+  /* ===== DIMENSIONS EXACTES ===== */
+  --max-width-550: 550px;
+  --max-width-400: 400px;
+  --max-width-300: 300px;
+  --max-width-1400: 1400px;
+  
+  /* ===== AUTRES VALEURS EXACTES ===== */
+  --hero-height: 90vh;
+  --aspect-ratio-16-9: 16/9;
+  
+  /* ===== GRADIENTS EXACTS ===== */
+  --gradient-section-1: linear-gradient(180deg, #1c0b3f 0%, #1c0b3f 50%, #491da5 175%);
+  --gradient-section-2: linear-gradient(180deg, #7f3dc5 0%, #6a09c9 100%);
 }
 
-/* Custom font */
+/* ===== Custom fonts ===== */
 @font-face {
   font-family: "Tomarik";
   src: url("/assets/fonts/Tomarik-Poster.woff2") format("woff2");
@@ -40,7 +72,7 @@
   font-style: normal;
 }
 
-/* Reset and base styles */
+/* ===== Reset and base styles ===== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -56,16 +88,15 @@ html {
 body {
   margin: 0;
   font-family: "Salted", sans-serif;
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg-dark-primary);
+  color: var(--text-white);
   text-align: center;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #1C0B3F;
 }
 
-/* Typography */
+/* ===== Typography ===== */
 h1,
 h2,
 h3,
@@ -78,17 +109,20 @@ h6 {
 }
 
 a {
-  /* color: var(--accent); */
   text-decoration: none;
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
-a:hover {
-  color: var(--accent-hover);
-  /* transform: translateY(-2px); */
+/* ===== SVG Optimizations ===== */
+img[src$=".svg"] {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+  shape-rendering: geometricPrecision;
+  text-rendering: geometricPrecision;
 }
 
-/* Scroll container */
+/* ===== Scroll container ===== */
 #scroll-container {
   height: 100vh;
   overflow-y: scroll;
@@ -111,18 +145,9 @@ a:hover {
   border-radius: 4px;
 }
 
-/* Hero section */
+/* ===== Hero section ===== */
 .hero {
   padding: 4rem 1rem;
-}
-
-.hero img {
-  /* max-width: 200px; */
-  /* transition: transform 0.3s ease; */
-}
-
-.hero img:hover {
-  /* transform: scale(1.05); */
 }
 
 .hero h1 {
@@ -134,7 +159,7 @@ a:hover {
   color: var(--muted);
 }
 
-/* Layout utilities */
+/* ===== Layout utilities ===== */
 .container {
   width: 100%;
   max-width: 1200px;
@@ -146,7 +171,64 @@ a:hover {
   padding: 4rem 1rem;
 }
 
-/* Responsive utilities */
+/* ===== CLASSES UTILITAIRES PERSONNALISÉES ===== */
+
+/* Couleurs */
+.text-primary { color: var(--color-primary); }
+.text-primary-dark { color: var(--color-primary-dark); }
+.text-primary-darker { color: var(--color-primary-darker); }
+.text-secondary { color: var(--color-secondary); }
+.text-text-dark { color: var(--text-dark); }
+
+.bg-primary { background-color: var(--color-primary); }
+.bg-primary-dark { background-color: var(--color-primary-dark); }
+.bg-primary-darker { background-color: var(--color-primary-darker); }
+.bg-dark-primary { background-color: var(--bg-dark-primary); }
+.bg-dark-secondary { background-color: var(--bg-dark-secondary); }
+.bg-gameplay { background-color: var(--bg-gameplay); }
+.bg-trailer { background-color: var(--bg-trailer); }
+
+/* Gradients */
+.bg-gradient-section-1 { background: var(--gradient-section-1); }
+.bg-gradient-section-2 { background: var(--gradient-section-2); }
+
+/* Police */
+.font-salted { font-family: "Salted", sans-serif; }
+.font-tomarik { font-family: "Tomarik", sans-serif; }
+
+/* Tailles de texte spécifiques */
+.text-22 { font-size: var(--text-22); }
+.text-32 { font-size: var(--text-32); }
+
+/* Espacements spécifiques */
+.p-110 { padding: var(--padding-110); }
+.gap-24 { gap: var(--gap-24); }
+.gap-80 { gap: var(--gap-80); }
+.gap-120 { gap: var(--gap-120); }
+.gap-124 { gap: var(--gap-124); }
+
+/* Largeurs maximales */
+.max-w-550 { max-width: var(--max-width-550); }
+.max-w-400 { max-width: var(--max-width-400); }
+.max-w-300 { max-width: var(--max-width-300); }
+.max-w-1400 { max-width: var(--max-width-1400); }
+
+/* Hauteur hero */
+.h-hero { height: var(--hero-height); }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Responsive utilities ===== */
 @media (max-width: 768px) {
   html {
     font-size: 14px;
@@ -158,5 +240,16 @@ a:hover {
 
   .hero h1 {
     font-size: 2rem;
+  }
+}
+
+/* ===== ACCESSIBILITÉ ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

@@ -1,12 +1,12 @@
 <script>
-  import { t } from '../i18n/translations.js' // ajustez le chemin
+  import { t } from '../i18n/translations.js'
   
-  export let locale = 'fr'; // nouvelle prop
-  export let title = ""; // On va utiliser la traduction
-  export let backgroundColor = "#3a2a5c";
-  export let titleColor = "#ffffff";
-  export let textColor = "#ffffff";
-  export let padding = "100px 40px";
+  export let locale = 'fr';
+  export let title = "";
+  export let backgroundColor = "var(--bg-gameplay)";
+  export let titleColor = "var(--text-white)";
+  export let textColor = "var(--text-white)";
+  export let padding = "var(--padding-100-40)";
   
   // Features avec les clés de traduction
   $: features = [
@@ -41,13 +41,13 @@
 </script>
 
 <section 
-  class="gameplay-section"
+  class="gameplay-section font-salted"
   style="background-color: {backgroundColor}; padding: {padding};"
 >
   <div class="container">
     <!-- Titre -->
     <h2 
-      class="gameplay-title"
+      class="gameplay-title font-salted"
       style="color: {titleColor};"
     >
       {title || t('s4.gameplay.title', locale)}
@@ -78,7 +78,7 @@
           
           <!-- Texte -->
           <div class="feature-text">
-            <p style="color: {textColor};">
+            <p class="font-salted" style="color: {textColor};">
               {feature.text}
             </p>
           </div>
@@ -88,7 +88,6 @@
   </div>
 </section>
 
-<!-- Le CSS reste identique -->
 <style>
   .gameplay-section {
     width: 100%;
@@ -98,14 +97,13 @@
   }
 
   .container {
-    max-width: 1400px;
+    max-width: var(--max-width-1400);
     width: 100%;
     margin: 0 auto;
     padding: 0 20px;
   }
 
   .gameplay-title {
-    font-family: 'Salted', sans-serif;
     font-size: clamp(3rem, 6vw, 5rem);
     font-weight: normal;
     text-align: left;
@@ -118,13 +116,13 @@
   .features-list {
     display: flex;
     flex-direction: column;
-    gap: 120px;
+    gap: var(--gap-120);
   }
 
   .feature-item {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 80px;
+    gap: var(--gap-80);
     align-items: center;
     opacity: 0;
     animation: fadeInUp 0.8s ease-out forwards;
@@ -143,7 +141,7 @@
     position: relative;
     transform: rotate(var(--rotation)) scale(var(--scale));
     transition: transform 0.3s ease;
-    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3));
+    filter: var(--shadow-feature);
   }
 
   .feature-image:hover {
@@ -165,7 +163,6 @@
   }
 
   .feature-text p {
-    font-family: 'Salted', sans-serif;
     font-size: clamp(1.1rem, 2.5vw, 1.4rem);
     line-height: 1.6;
     margin: 0;
@@ -215,7 +212,7 @@
     
     .feature-image {
       order: -1;
-      max-width: 400px;
+      max-width: var(--max-width-400);
       margin: 0 auto;
     }
     
@@ -238,7 +235,7 @@
     }
     
     .feature-image {
-      max-width: 300px;
+      max-width: var(--max-width-300);
     }
   }
 

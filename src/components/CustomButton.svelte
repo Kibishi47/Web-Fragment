@@ -4,9 +4,10 @@
   export let backgroundSvg = "/assets/images/button-413x74.svg";
   export let hoverBackgroundSvg = null;
   export let newTab = false;
-  export let fontSize = "1.2rem";
-  export let paddingX = "10px";
-  export let paddingY = "5px";
+  export let fontSize = "text-xl";
+  export let paddingX = "px-2.5";
+  export let paddingY = "py-1.5";
+  export let width = "w-auto";
 
   let isHovered = false;
 
@@ -18,53 +19,39 @@
 <a
   href={link}
   target={newTab ? "_blank" : "_self"}
-  rel="noopener noreferrer"
-  class="custom-btn"
+  rel={newTab ? "noopener noreferrer" : undefined}
+  class="relative inline-block cursor-pointer no-underline font-normal text-white select-none max-w-full focus-visible:outline-2 focus-visible:outline-current focus-visible:outline-offset-2 {width}"
   on:mouseenter={() => toggleHover(true)}
   on:mouseleave={() => toggleHover(false)}
 >
-  <!-- Image de fond -->
-  <img src={isHovered && hoverBackgroundSvg ? hoverBackgroundSvg : backgroundSvg} alt="Button" class="btn-img" />
+  <!-- Image de fond normale -->
+  <img 
+    src={backgroundSvg} 
+    alt="" 
+    width="413"
+    height="74"
+    class="block w-full h-auto max-w-full transition-opacity duration-300 ease-in-out"
+    style="image-rendering: auto; shape-rendering: geometricPrecision; filter: contrast(1.1);"
+    class:opacity-0={isHovered && hoverBackgroundSvg}
+  />
 
-  <!-- Zone de texte avec padding -->
-  <div class="btn-content" style="padding: {paddingY} {paddingX}; font-size: {fontSize};">
-    <span class="btn-label">{label}</span>
+  <!-- Image de fond hover (si fournie) -->
+  {#if hoverBackgroundSvg}
+    <img 
+      src={hoverBackgroundSvg} 
+      alt="" 
+      class="absolute top-0 left-0 block w-full h-auto max-w-full transition-opacity duration-300 ease-in-out"
+      style="image-rendering: auto; shape-rendering: geometricPrecision; filter: contrast(1.1);"
+      class:opacity-0={!isHovered}
+    />
+  {/if}
+
+  <!-- Zone de texte -->
+  <div 
+    class="absolute top-0 left-0 w-full h-full flex justify-center items-center pointer-events-none box-border {paddingX} {paddingY}"
+  >
+    <span class="whitespace-nowrap text-center overflow-hidden text-ellipsis max-w-[90%] {fontSize} md:text-lg sm:text-base">
+      {label}
+    </span>
   </div>
 </a>
-
-<style>
-  .custom-btn {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-    text-decoration: none;
-    font-weight: 400;
-    color: white;
-    user-select: none;
-    width: fit-content; /* largeur automatique */
-  }
-
-  .custom-btn .btn-img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-
-  .btn-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    pointer-events: none;
-    box-sizing: border-box;
-  }
-
-  .btn-label {
-    white-space: nowrap;
-    text-align: center;
-  }
-</style>
