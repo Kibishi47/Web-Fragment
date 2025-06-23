@@ -4,7 +4,10 @@
   export let backgroundSvg = "/assets/images/button-413x74.svg";
   export let hoverBackgroundSvg = null;
   export let newTab = false;
-  export let fontSize = "text-xl";
+  export let fontSize = "text-lg";
+  export let lgFontSize = "lg:text-xl";
+  export let mdFontSize = "md:text-lg";
+  export let smFontSize = "sm:text-base";
   export let paddingX = "px-2.5";
   export let paddingY = "py-1.5";
   export let width = "w-auto";
@@ -50,7 +53,7 @@
   <div 
     class="absolute top-0 left-0 w-full h-full flex justify-center items-center pointer-events-none box-border {paddingX} {paddingY}"
   >
-    <span class="whitespace-nowrap text-center overflow-hidden text-ellipsis max-w-[90%] {fontSize} md:text-lg sm:text-base">
+    <span class="whitespace-nowrap text-center overflow-hidden text-ellipsis max-w-[90%] {lgFontSize} {mdFontSize} {smFontSize} {fontSize}">
       {label}
     </span>
   </div>

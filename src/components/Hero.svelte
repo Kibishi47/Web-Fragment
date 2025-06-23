@@ -61,6 +61,10 @@
         paddingY="py-4"
         backgroundSvg="/assets/images/button-413x74.svg"
         hoverBackgroundSvg="/assets/images/button-hover-413x74.svg"
+        fontSize="text-2xl"
+        lgFontSize="lg:text-3xl"
+        mdFontSize="md:text-3xl"
+        smFontSize="sm:text-2xl"
       />
     {/if}
   </div>

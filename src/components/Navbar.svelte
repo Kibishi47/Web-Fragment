@@ -55,11 +55,14 @@
       link={kickstarter.href}
       newTab={true}
       width="w-auto"
-      fontSize="text-lg"
       paddingX="px-4"
       paddingY="py-2"
       backgroundSvg="/assets/images/button-154x47.svg"
       hoverBackgroundSvg="/assets/images/button-hover-154x47.svg"
+      fontSize="text-base"
+      lgFontSize="lg:text-2xl"
+      mdFontSize="md:text-2xl"
+      smFontSize="sm:text-2xl"
     />
 
     <!-- Switch de langues -->
