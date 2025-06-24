@@ -3,17 +3,11 @@
   
   export let locale = 'fr';
   export let title = '';
-  export let videoSrc = 'https://www.youtube.com/embed/t0MhQf51rM4?si=CG-B2oEd7802o_iN';
+  export let videoSrc = "https://www.youtube-nocookie.com/embed/t0MhQf51rM4";
   export let posterImage = '';
   export let backgroundColor = 'var(--bg-trailer)';
   export let titleColor = 'var(--text-white)';
   export let aspectRatio = 'var(--aspect-ratio-16-9)';
-
-  // 🔁 Si c'est un lien YouTube, on force la version sans cookie
-  $: safeVideoSrc =
-    videoSrc.includes('youtube.com/embed/')
-      ? videoSrc.replace('youtube.com', 'www.youtube-nocookie.com')
-      : videoSrc;
 </script>
 
 <section 
@@ -35,7 +29,7 @@
       {#if videoSrc}
         {#if videoSrc.includes('youtube') || videoSrc.includes('vimeo')}
           <iframe
-            src={safeVideoSrc}
+            src={videoSrc}
             title={t('s3.trailer.iframe_title', locale)}
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
