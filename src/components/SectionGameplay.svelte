@@ -6,7 +6,6 @@
   export let backgroundColor = "var(--bg-gameplay)";
   export let titleColor = "var(--text-white)";
   export let textColor = "var(--text-white)";
-  export let padding = "var(--padding-100-40)";
   
   // Features avec les clés de traduction
   $: features = [
@@ -41,8 +40,8 @@
 </script>
 
 <section 
-  class="gameplay-section font-salted"
-  style="background-color: {backgroundColor}; padding: {padding};"
+  class="py-16 g:py-25 lg:px-10 gameplay-section font-salted responsive-padding"
+  style="background-color: {backgroundColor};"
 >
   <div class="container">
     <!-- Titre -->

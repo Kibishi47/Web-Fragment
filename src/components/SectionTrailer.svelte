@@ -7,27 +7,26 @@
   export let posterImage = "";
   export let backgroundColor = "var(--bg-trailer)";
   export let titleColor = "var(--text-white)";
-  export let padding = "var(--padding-80-40)";
   export let aspectRatio = "var(--aspect-ratio-16-9)";
 </script>
 
 <section 
-  class="trailer-section font-salted"
-  style="background-color: {backgroundColor}; padding: {padding};"
+  class="relative w-full overflow-hidden font-salted responsive-padding flex items-center justify-center lg:min-h-screen"
+  style="background-color: {backgroundColor};"
 >
-  <div class="container">
-    <!-- Titre -->
+  <div class="mx-auto max-w-7xl px-4 w-full">
+    <!-- Titre agrandi -->
     <h2 
-      class="trailer-title font-salted"
+      class="font-salted text-5xl md:text-6xl lg:text-7xl font-normal leading-tight text-left m-0 mb-12 md:mb-16 responsive-text-spacing"
       style="color: {titleColor};"
     >
       {title || t('s3.trailer.title', locale)}
     </h2>
     
-    <!-- Conteneur vidéo -->
+    <!-- Conteneur vidéo pleine largeur -->
     <div 
-      class="video-container"
-      style="aspect-ratio: {aspectRatio};"
+      class="w-full bg-black rounded-lg overflow-hidden relative"
+      style="aspect-ratio: {aspectRatio}; box-shadow: var(--shadow-video);"
     >
       {#if videoSrc}
         <!-- Si c'est une URL YouTube/Vimeo -->
@@ -49,18 +48,18 @@
             class="w-full h-full border-none block"
           >
             <source src={videoSrc} type="video/mp4">
-            <p class="font-salted">{t('s3.trailer.video_not_supported', locale)}</p>
+            <p class="font-salted text-white p-4">{t('s3.trailer.video_not_supported', locale)}</p>
           </video>
         {/if}
       {:else}
         <!-- Placeholder si pas de vidéo -->
-        <div class="video-placeholder">
+        <div class="w-full h-full flex items-center justify-center bg-gray-800 text-white relative">
           {#if posterImage}
             <img src={posterImage} alt={t('s3.trailer.preview_alt', locale)} class="w-full h-full object-cover" />
           {:else}
-            <div class="placeholder-content">
-              <div class="play-icon">▶</div>
-              <p class="font-salted">{t('s3.trailer.coming_soon', locale)}</p>
+            <div class="text-center z-10">
+              <div class="text-6xl mb-4 opacity-70">▶</div>
+              <p class="font-salted text-lg opacity-80">{t('s3.trailer.coming_soon', locale)}</p>
             </div>
           {/if}
         </div>
@@ -68,83 +67,3 @@
     </div>
   </div>
 </section>
-
-<style>
-  .trailer-section {
-    width: 100%;
-    min-height: 60vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .container {
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-
-  .trailer-title {
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: normal;
-    text-align: left;
-    margin: 0 0 40px 0;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  .video-container {
-    width: 100%;
-    background: var(--bg-black);
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: var(--shadow-video);
-    position: relative;
-  }
-
-  .video-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #1a1a1a;
-    color: var(--text-white);
-    position: relative;
-  }
-
-  .placeholder-content {
-    text-align: center;
-    z-index: 2;
-  }
-
-  .play-icon {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    opacity: 0.7;
-  }
-
-  .placeholder-content p {
-    font-size: 1.2rem;
-    margin: 0;
-    opacity: 0.8;
-  }
-
-  @media (max-width: 768px) {
-    .trailer-title {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    
-    .video-container {
-      border-radius: 4px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .container {
-      padding: 0 15px;
-    }
-  }
-</style>
