@@ -40,44 +40,52 @@
 </script>
 
 <section 
-  class="py-16 g:py-25 lg:px-10 gameplay-section font-salted responsive-padding"
+  class="relative w-full overflow-hidden font-salted responsive-padding min-h-screen"
   style="background-color: {backgroundColor};"
 >
-  <div class="container">
+  <div class="mx-auto max-w-7xl px-4 w-full">
     <!-- Titre -->
     <h2 
-      class="gameplay-title font-salted"
+      class="font-salted text-5xl md:text-6xl lg:text-7xl font-normal leading-tight text-left m-0 mb-12 md:mb-16 uppercase tracking-widest opacity-0 animate-fade-in-up"
       style="color: {titleColor};"
     >
       {title || t('s4.gameplay.title', locale)}
     </h2>
     
     <!-- Features -->
-    <div class="features-list">
+    <div class="flex flex-col space-y-32 lg:space-y-40">
       {#each features as feature, index}
         <div 
-          class="feature-item"
-          class:reverse={feature.imagePosition === 'right'}
-          style="--delay: {index * 0.2}s;"
+          class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center opacity-0 animate-fade-in-up"
+          class:lg:direction-rtl={feature.imagePosition === 'right'}
+          style="animation-delay: {index * 0.2}s; animation-fill-mode: forwards;"
         >
           <!-- Image -->
           <div 
-            class="feature-image"
+            class="relative transition-transform duration-300 ease-in-out hover:rotate-0 hover:scale-105 order-2 lg:order-none"
+            class:lg:direction-ltr={feature.imagePosition === 'right'}
             style="
-              --rotation: {feature.imageRotation}deg;
-              --scale: {feature.imageScale};
+              transform: rotate({feature.imageRotation}deg) scale({feature.imageScale});
+              filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3));
             "
           >
             <img 
               src={feature.image} 
               alt={feature.imageAlt}
               loading="lazy"
+              class="w-full h-auto max-w-sm mx-auto lg:max-w-none transition-all duration-300"
             />
           </div>
           
           <!-- Texte -->
-          <div class="feature-text">
-            <p class="font-salted" style="color: {textColor};">
+          <div 
+            class="p-5 lg:p-0 order-1 lg:order-none text-center lg:text-left"
+            class:lg:direction-ltr={feature.imagePosition === 'right'}
+          >
+            <p 
+              class="font-salted text-lg sm:text-xl lg:text-2xl leading-relaxed m-0 tracking-wide opacity-90"
+              style="color: {textColor};"
+            >
               {feature.text}
             </p>
           </div>
@@ -88,86 +96,20 @@
 </section>
 
 <style>
-  .gameplay-section {
-    width: 100%;
-    min-height: 100vh;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .container {
-    max-width: var(--max-width-1400);
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-
-  .gameplay-title {
-    font-size: clamp(3rem, 6vw, 5rem);
-    font-weight: normal;
-    text-align: left;
-    margin: 0 0 80px 0;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    animation: fadeInUp 1s ease-out;
-  }
-
-  .features-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--gap-120);
-  }
-
-  .feature-item {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--gap-80);
-    align-items: center;
-    opacity: 0;
+  .animate-fade-in-up {
     animation: fadeInUp 0.8s ease-out forwards;
-    animation-delay: var(--delay);
   }
 
-  .feature-item.reverse {
-    direction: rtl;
+  .lg\:direction-rtl {
+    @media (min-width: 1024px) {
+      direction: rtl;
+    }
   }
 
-  .feature-item.reverse > * {
-    direction: ltr;
-  }
-
-  .feature-image {
-    position: relative;
-    transform: rotate(var(--rotation)) scale(var(--scale));
-    transition: transform 0.3s ease;
-    filter: var(--shadow-feature);
-  }
-
-  .feature-image:hover {
-    transform: rotate(0deg) scale(1.05);
-  }
-
-  .feature-image img {
-    width: 100%;
-    height: auto;
-    transition: border-color 0.3s ease;
-  }
-
-  .feature-image:hover img {
-    border-color: rgba(255, 255, 255, 0.3);
-  }
-
-  .feature-text {
-    padding: 20px;
-  }
-
-  .feature-text p {
-    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-    line-height: 1.6;
-    margin: 0;
-    text-align: left;
-    letter-spacing: 0.5px;
-    opacity: 0.9;
+  .lg\:direction-ltr {
+    @media (min-width: 1024px) {
+      direction: ltr;
+    }
   }
 
   @keyframes fadeInUp {
@@ -181,80 +123,11 @@
     }
   }
 
-  @media (max-width: 1024px) {
-    .feature-item {
-      gap: 60px;
-    }
-    
-    .features-list {
-      gap: 100px;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .gameplay-title {
-      text-align: center;
-      margin-bottom: 60px;
-    }
-    
-    .feature-item,
-    .feature-item.reverse {
-      grid-template-columns: 1fr;
-      gap: 40px;
-      text-align: center;
-      direction: ltr;
-    }
-    
-    .features-list {
-      gap: 80px;
-    }
-    
-    .feature-image {
-      order: -1;
-      max-width: var(--max-width-400);
-      margin: 0 auto;
-    }
-    
-    .feature-text {
-      padding: 10px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .container {
-      padding: 0 15px;
-    }
-    
-    .feature-item {
-      gap: 30px;
-    }
-    
-    .features-list {
-      gap: 60px;
-    }
-    
-    .feature-image {
-      max-width: var(--max-width-300);
-    }
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .feature-image {
-      transition: transform 0.3s ease, filter 0.3s ease;
-    }
-    
-    .gameplay-section {
-      background-attachment: fixed;
-    }
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .feature-image img {
-      border-color: rgba(255, 255, 255, 0.05);
-    }
-    
-    .feature-image:hover img {
-      border-color: rgba(255, 255, 255, 0.2);
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-in-up,
+    .transition-transform {
+      animation: none !important;
+      transition: none !important;
     }
   }
 </style>
