@@ -1,13 +1,19 @@
 <script>
-  import { t } from '../i18n/translations.js'
+  import { t } from '../i18n/translations.js';
   
-  export let locale = 'fr'
-  export let title = "";
-  export let videoSrc = "https://www.youtube.com/embed/t0MhQf51rM4?si=CG-B2oEd7802o_iN"; 
-  export let posterImage = "";
-  export let backgroundColor = "var(--bg-trailer)";
-  export let titleColor = "var(--text-white)";
-  export let aspectRatio = "var(--aspect-ratio-16-9)";
+  export let locale = 'fr';
+  export let title = '';
+  export let videoSrc = 'https://www.youtube.com/embed/t0MhQf51rM4?si=CG-B2oEd7802o_iN';
+  export let posterImage = '';
+  export let backgroundColor = 'var(--bg-trailer)';
+  export let titleColor = 'var(--text-white)';
+  export let aspectRatio = 'var(--aspect-ratio-16-9)';
+
+  // 🔁 Si c'est un lien YouTube, on force la version sans cookie
+  $: safeVideoSrc =
+    videoSrc.includes('youtube.com/embed/')
+      ? videoSrc.replace('youtube.com', 'www.youtube-nocookie.com')
+      : videoSrc;
 </script>
 
 <section 
@@ -15,24 +21,21 @@
   style="background-color: {backgroundColor};"
 >
   <div class="mx-auto px-4 w-full">
-    <!-- Titre agrandi -->
     <h2 
       class="font-salted text-5xl md:text-6xl lg:text-7xl font-normal leading-tight text-left m-0 mb-12 md:mb-16 responsive-text-spacing"
       style="color: {titleColor};"
     >
       {title || t('s3.trailer.title', locale)}
     </h2>
-    
-    <!-- Conteneur vidéo pleine largeur -->
+
     <div 
       class="w-full bg-black rounded-lg overflow-hidden relative"
       style="aspect-ratio: {aspectRatio}; box-shadow: var(--shadow-video);"
     >
       {#if videoSrc}
-        <!-- Si c'est une URL YouTube/Vimeo -->
         {#if videoSrc.includes('youtube') || videoSrc.includes('vimeo')}
           <iframe
-            src={videoSrc}
+            src={safeVideoSrc}
             title={t('s3.trailer.iframe_title', locale)}
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -40,19 +43,17 @@
             class="w-full h-full border-none block"
           ></iframe>
         {:else}
-          <!-- Si c'est un fichier vidéo direct -->
           <video
             controls
             poster={posterImage}
             preload="metadata"
             class="w-full h-full border-none block"
           >
-            <source src={videoSrc} type="video/mp4">
+            <source src={videoSrc} type="video/mp4" />
             <p class="font-salted text-white p-4">{t('s3.trailer.video_not_supported', locale)}</p>
           </video>
         {/if}
       {:else}
-        <!-- Placeholder si pas de vidéo -->
         <div class="w-full h-full flex items-center justify-center bg-gray-800 text-white relative">
           {#if posterImage}
             <img src={posterImage} alt={t('s3.trailer.preview_alt', locale)} class="w-full h-full object-cover" />
