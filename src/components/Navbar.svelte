@@ -49,7 +49,7 @@
       <a href={link.href} class="nav-link">{link.label}</a>
     {/each}
 
-    <CustomButton
+    <!-- <CustomButton
       label={kickstarter.label || t('nav.kickstarter', locale)}
       link={kickstarter.href}
       newTab={true}
@@ -62,7 +62,7 @@
       lgFontSize="lg:text-2xl"
       mdFontSize="md:text-2xl"
       smFontSize="sm:text-2xl"
-    />
+    /> -->
 
     <!-- Switch de langues -->
     <div 
