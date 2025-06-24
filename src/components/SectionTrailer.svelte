@@ -17,7 +17,7 @@
   <div class="mx-auto px-4 w-full">
     <h2 
       class="font-salted text-5xl md:text-6xl lg:text-7xl font-normal leading-tight text-left m-0 mb-12 md:mb-16 responsive-text-spacing"
-      style="color: {titleColor};"
+      style="color: {titleColor}; margin-top: 0;"
     >
       {title || t('s3.trailer.title', locale)}
     </h2>
