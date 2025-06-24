@@ -5,7 +5,7 @@
 
   export let locale = "fr";
   export let videoUrl = "/assets/videos/hero.webm";
-  export let fallbackImageUrl = "/assets/images/hero-image.png";
+  export let fallbackImageUrl = "/assets/images/hero-image.webp";
   export let height = "var(--hero-height)";
   export let textColor = "var(--text-white)";
   export let overlayOpacity = 0.4;

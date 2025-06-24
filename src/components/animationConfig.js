@@ -26,7 +26,7 @@ export const ANIMATION_CONFIG = {
     width: 300,
     height: 300,
     heroPosition: 70,
-    image: "/assets/images/guy.png"
+    image: "/assets/images/guy.webp"
   },
 
   // === VITESSE DE CHUTE ===

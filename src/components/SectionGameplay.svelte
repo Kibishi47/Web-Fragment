@@ -11,7 +11,7 @@
   $: features = [
     {
       id: 1,
-      image: "/assets/images/gameplay1.png",
+      image: "/assets/images/gameplay1.webp",
       imageAlt: t('s4.gameplay.feature1.alt', locale),
       text: t('s4.gameplay.feature1.text', locale),
       imagePosition: "left",
@@ -20,7 +20,7 @@
     },
     {
       id: 2,
-      image: "/assets/images/gameplay2.png",
+      image: "/assets/images/gameplay2.webp",
       imageAlt: t('s4.gameplay.feature2.alt', locale),
       text: t('s4.gameplay.feature2.text', locale),
       imagePosition: "right",
@@ -29,7 +29,7 @@
     },
     {
       id: 3,
-      image: "/assets/images/gameplay3.png",
+      image: "/assets/images/gameplay3.webp",
       imageAlt: t('s4.gameplay.feature3.alt', locale),
       text: t('s4.gameplay.feature3.text', locale),
       imagePosition: "left",
