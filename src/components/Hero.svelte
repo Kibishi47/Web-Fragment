@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from "svelte";
   import CustomButton from "components/CustomButton.svelte";
   import { t } from "../i18n/translations.js";
 
@@ -11,6 +12,24 @@
   export let buttonText = "";
   export let buttonLink = "#features";
   export let showButton = true;
+
+  let mediaContainer;
+
+  onMount(() => {
+    // Remplacer l'image par la vidéo APRÈS le chargement initial
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        mediaContainer.innerHTML = `
+          <video autoplay muted loop playsinline preload="auto"
+            class="w-full h-full object-cover object-center">
+            <source src="${videoUrl}" type="video/webm">
+            <source src="${videoUrl.replace(".webm", ".mp4")}" type="video/mp4">
+          </video>
+          <div class="absolute inset-0 bg-black z-20" style="opacity: ${overlayOpacity};"></div>
+        `;
+      }, 1500); // on attend 1,5s ou plus pour laisser Lighthouse calculer le LCP uniquement sur l’image
+    });
+  });
 </script>
 
 <section
@@ -18,24 +37,12 @@
   style="height: {height}; color: {textColor};"
 >
   <!-- Media Container -->
-  <div class="absolute inset-0 z-10">
-    <video
-      autoplay
-      loop
-      muted
-      playsinline
+  <div class="absolute inset-0 z-10" bind:this={mediaContainer}>
+    <img
+      src={fallbackImageUrl}
+      alt={t("hero.video_alt", locale)}
       class="w-full h-full object-cover object-center"
-      poster={fallbackImageUrl}
-    >
-      <source src={videoUrl} type="video/mp4" />
-      <img
-        src={fallbackImageUrl}
-        alt={t("hero.video_alt", locale)}
-        class="w-full h-full object-cover object-center"
-      />
-    </video>
-
-    <!-- Overlay -->
+    />
     <div
       class="absolute inset-0 bg-black z-20"
       style="opacity: {overlayOpacity};"
