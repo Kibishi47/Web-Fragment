@@ -390,3 +390,11 @@ img[src$=".svg"] {
     padding: var(--padding-110) 12px;
   }
 }
+
+
+/* ===== HIDE ANIMATION ON MOBILE ===== */
+@media (max-width: 768px) {
+  .animation-overlay {
+    display: none !important;
+  }
+}
