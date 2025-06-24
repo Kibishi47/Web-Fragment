@@ -1,6 +1,10 @@
 ---
 import '../styles/global.css';
 const { title } = Astro.props;
+
+import { t } from "../i18n/translations.js";
+export let locale = 'fr';
+export let metaDescription = "";
 ---
 
 <html lang="fr">
@@ -8,8 +12,8 @@ const { title } = Astro.props;
       <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <title>SpinBack - Site Officiel</title> -->
     <title>{title}</title>
+    <meta name="description" content={t("meta.description", locale)} />
     <link rel="preload" href="/assets/fonts/Tomarik-Poster.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/assets/fonts/Salted_Regular.otf" as="font" type="font/opentype" crossorigin />
     <link rel="preload" as="image" href="/assets/images/hero-image.webp" type="image/webp" />

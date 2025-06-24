@@ -1,5 +1,6 @@
 export const translations = {
   fr: {
+    'meta.description': "SpinBack est un jeu d'enquête interactif où vous revivez une soirée étudiante à travers des souvenirs fragmentés. Utilisez une platine vinyle réelle pour explorer, rembobiner et révéler la vérité.",
     'nav.kickstarter': "réserver",
     'nav.logo_alt': "Logo SpinBack",
     'hero.title': "SpinBack",
@@ -40,6 +41,7 @@ export const translations = {
     'footer.design': "DOSSIER DE CONCEPTION",
   },
   en: {
+    'meta.description': "SpinBack is an interactive investigation game where you relive a student party through fragmented memories. Use a real vinyl turntable to explore, rewind, and uncover the truth.",
     'nav.kickstarter': "Book Now",
     'nav.logo_alt': "SpinBack Logo",
     'hero.title': "SpinBack",
