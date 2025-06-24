@@ -14,7 +14,7 @@
   class="relative w-full overflow-hidden font-salted responsive-padding flex items-center justify-center lg:min-h-screen"
   style="background-color: {backgroundColor};"
 >
-  <div class="mx-auto max-w-7xl px-4 w-full">
+  <div class="mx-auto px-4 w-full">
     <!-- Titre agrandi -->
     <h2 
       class="font-salted text-5xl md:text-6xl lg:text-7xl font-normal leading-tight text-left m-0 mb-12 md:mb-16 responsive-text-spacing"
