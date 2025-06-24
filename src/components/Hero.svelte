@@ -50,7 +50,7 @@
     <img
       src="/assets/images/LogoMain.svg"
       alt="Spinback logo"
-      class="w-120 h-auto mb-8"
+      class="lg:w-120 w-80 h-auto mb-8"
     />
 
     {#if showButton}
