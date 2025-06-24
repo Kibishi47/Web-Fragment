@@ -3,8 +3,6 @@
   import { t } from "../i18n/translations.js";
 
   export let locale = "fr";
-  export let title = "";
-  export let subtitle = "";
   export let videoUrl = "/assets/videos/hero.webm";
   export let fallbackImageUrl = "/assets/images/hero-image.png";
   export let height = "var(--hero-height)";
@@ -13,7 +11,6 @@
   export let buttonText = "";
   export let buttonLink = "#features";
   export let showButton = true;
-  export let alignText = "center";
 </script>
 
 <section
