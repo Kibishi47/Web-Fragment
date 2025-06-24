@@ -253,3 +253,140 @@ img[src$=".svg"] {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* ===== RESPONSIVE CLASSES ===== */
+.responsive-padding {
+  padding: var(--padding-140-120);
+}
+
+.responsive-gap {
+  gap: var(--gap-124);
+}
+
+.responsive-text-spacing {
+  margin-top: var(--gap-24);
+}
+
+.responsive-image {
+  max-width: var(--max-width-550);
+}
+
+/* ===== RESPONSIVE VARIABLES ===== */
+@media (max-width: 1024px) {
+  :root {
+    --padding-140-120: 100px 80px;
+    --gap-124: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --padding-140-120: 60px 20px;
+    --gap-124: 40px;
+    --gap-24: 16px;
+    --max-width-550: 100%;
+  }
+  
+  .responsive-padding {
+    padding: var(--padding-140-120);
+  }
+  
+  .responsive-gap {
+    gap: var(--gap-124);
+  }
+  
+  .responsive-text-spacing {
+    margin-top: var(--gap-24);
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --padding-140-120: 40px 16px;
+    --gap-124: 24px;
+    --gap-24: 12px;
+  }
+}
+
+/* ===== MOBILE SPECIFIC ADJUSTMENTS ===== */
+@media (max-width: 640px) {
+  .max-w-xs {
+    max-width: 20rem; /* 320px */
+  }
+  
+  .max-w-sm {
+    max-width: 24rem; /* 384px */
+  }
+}
+
+/* ===== RESPONSIVE SECTION PADDING ===== */
+.responsive-section-padding {
+  padding: var(--padding-110);
+}
+
+/* ===== RESPONSIVE TEXT CLASSES ===== */
+.responsive-subtitle {
+  font-size: var(--text-22);
+}
+
+.responsive-title {
+  font-size: clamp(1.5rem, 4vw, 3rem);
+}
+
+/* ===== RESPONSIVE VARIABLES UPDATES ===== */
+@media (max-width: 1024px) {
+  :root {
+    --padding-110: 80px;
+    --text-22: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --padding-110: 60px;
+    --text-22: 18px;
+  }
+  
+  .responsive-section-padding {
+    padding: var(--padding-110) 20px;
+  }
+  
+  .responsive-title {
+    font-size: clamp(1.25rem, 5vw, 2rem) !important;
+  }
+  
+  .gap-6 {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --padding-110: 40px;
+    --text-22: 16px;
+  }
+  
+  .responsive-section-padding {
+    padding: var(--padding-110) 16px;
+  }
+  
+  .responsive-title {
+    font-size: clamp(1.125rem, 6vw, 1.75rem) !important;
+  }
+  
+  .gap-6 {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 320px) {
+  :root {
+    --padding-110: 30px;
+    --text-22: 14px;
+  }
+  
+  .responsive-section-padding {
+    padding: var(--padding-110) 12px;
+  }
+}

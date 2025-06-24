@@ -3,7 +3,7 @@
   
   export let locale = 'fr'
   export let title = "";
-  export let videoSrc = ""; 
+  export let videoSrc = "https://www.youtube.com/embed/t0MhQf51rM4?si=CG-B2oEd7802o_iN"; 
   export let posterImage = "";
   export let backgroundColor = "var(--bg-trailer)";
   export let titleColor = "var(--text-white)";

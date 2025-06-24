@@ -1,10 +1,10 @@
 export const translations = {
   fr: {
-    'nav.kickstarter': "KICKSTARTER",
+    'nav.kickstarter': "réserver",
     'nav.logo_alt': "Logo SpinBack",
     'hero.title': "SpinBack",
     'hero.subtitle': "Seule la vérité sonne juste.",
-    'hero.button': "Participer au kickstarter",
+    'hero.button': "faire une réservation",
     'hero.video_alt': "Arrière-plan vidéo du héros",
     "s1.spinback.what": "qu'est-ce que spinback ?",
     "s1.spinback.description":
@@ -40,11 +40,11 @@ export const translations = {
     'footer.design': "DOSSIER DE CONCEPTION",
   },
   en: {
-    'nav.kickstarter': "KICKSTARTER",
+    'nav.kickstarter': "Book Now",
     'nav.logo_alt': "SpinBack Logo",
     'hero.title': "SpinBack",
     'hero.subtitle': "Only the truth sounds right.",
-    'hero.button': "Join the kickstarter",
+    'hero.button': "Book Now",
     'hero.video_alt': "Hero background video",
     "s1.spinback.what": "what is spinback?",
     "s1.spinback.description":
