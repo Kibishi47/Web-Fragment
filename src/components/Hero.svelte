@@ -1,25 +1,30 @@
 <script>
-  import { onMount } from "svelte";
-  import CustomButton from "components/CustomButton.svelte";
-  import { t } from "../i18n/translations.js";
+  import { onMount } from 'svelte';
+  import CustomButton from 'components/CustomButton.svelte';
+  import { t } from '../i18n/translations.js';
 
-  export let locale = "fr";
-  export let videoUrl = "/assets/videos/hero.webm";
-  export let fallbackImageUrl = "/assets/images/hero-image.webp";
-  export let height = "var(--hero-height)";
-  export let textColor = "var(--text-white)";
+  export let locale = 'fr';
+  export let videoUrl = '/assets/videos/hero.webm';
+  export let fallbackImageUrl = '/assets/images/hero-image.webp';
+  export let height = 'var(--hero-height)';
+  export let textColor = 'var(--text-white)';
   export let overlayOpacity = 0.4;
-  export let buttonText = "";
-  export let buttonLink = "#features";
+  export let buttonText = '';
+  export let buttonLink = '#features';
   export let showButton = true;
 
   let showVideo = false;
+  let removeImage = false;
 
   onMount(() => {
-    // Attend que la page soit montée, puis active la vidéo après un court délai
+    // Affiche la vidéo après le rendu initial
     setTimeout(() => {
       showVideo = true;
-    }, 300); // vous pouvez ajuster ce délai selon vos tests
+      // Supprime l'image une fois la vidéo visible (LCP déjà mesuré)
+      setTimeout(() => {
+        removeImage = true;
+      }, 500); // délai pour laisser le temps à la transition éventuelle
+    }, 50); // petit délai pour laisser l’image s'afficher rapidement
   });
 </script>
 
@@ -27,38 +32,38 @@
   class="hero relative w-full overflow-hidden flex items-center justify-center font-salted mt-0"
   style="height: {height}; color: {textColor};"
 >
-  <!-- Media Container -->
+  <!-- Media container -->
   <div class="absolute inset-0 z-10">
-    <!-- Image fallback rapide et optimisée -->
-    <img
-      src={fallbackImageUrl}
-      alt={t("hero.video_alt", locale)}
-      class="w-full h-full object-cover object-center absolute inset-0 z-10 transition-opacity duration-700"
-      style="opacity: {showVideo ? 0 : 1};"
-    />
+    <!-- Image visible au chargement, retirée après -->
+    {#if !removeImage}
+      <img
+        src={fallbackImageUrl}
+        alt={t('hero.video_alt', locale)}
+        class="w-full h-full object-cover object-center absolute inset-0 z-10"
+      />
+    {/if}
 
-    <!-- Lazy-loaded video uniquement après initial render -->
+    <!-- Vidéo chargée ensuite -->
     {#if showVideo}
       <video
         autoplay
+        loop
         muted
         playsinline
-        loop
-        class="w-full h-full object-cover object-center absolute inset-0 z-10 transition-opacity duration-700"
-        style="opacity: 1;"
+        class="w-full h-full object-cover object-center absolute inset-0 z-10"
       >
         <source src={videoUrl} type="video/webm" />
       </video>
     {/if}
 
-    <!-- Overlay -->
+    <!-- Overlay foncé -->
     <div
       class="absolute inset-0 bg-black z-20 pointer-events-none"
       style="opacity: {overlayOpacity};"
     ></div>
   </div>
 
-  <!-- Content -->
+  <!-- Contenu centré -->
   <div class="relative z-30 flex flex-col items-center justify-center gap-10">
     <img
       src="/assets/images/LogoMain.svg"
@@ -68,7 +73,7 @@
 
     {#if showButton}
       <CustomButton
-        label={buttonText || t("hero.button", locale)}
+        label={buttonText || t('hero.button', locale)}
         link={buttonLink}
         paddingX="px-6"
         paddingY="py-4"
