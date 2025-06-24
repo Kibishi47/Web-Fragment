@@ -53,16 +53,16 @@
     </h2>
     
     <!-- Features -->
-    <div class="flex flex-col space-y-32 lg:space-y-40">
+    <div class="flex flex-col space-y-48 lg:space-y-40">
       {#each features as feature, index}
         <div 
           class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center opacity-0 animate-fade-in-up"
           class:lg:direction-rtl={feature.imagePosition === 'right'}
           style="animation-delay: {index * 0.2}s; animation-fill-mode: forwards;"
         >
-          <!-- Image -->
+          <!-- Image avec padding pour éviter les débordements -->
           <div 
-            class="relative transition-transform duration-300 ease-in-out hover:rotate-0 hover:scale-105 order-2 lg:order-none"
+            class="relative transition-transform duration-300 ease-in-out hover:rotate-0 hover:scale-105 order-1 lg:order-none py-16 lg:py-0"
             class:lg:direction-ltr={feature.imagePosition === 'right'}
             style="
               transform: rotate({feature.imageRotation}deg) scale({feature.imageScale});
@@ -79,7 +79,7 @@
           
           <!-- Texte -->
           <div 
-            class="p-5 lg:p-0 order-1 lg:order-none text-center lg:text-left"
+            class="p-5 lg:p-0 order-2 lg:order-none text-center lg:text-left"
             class:lg:direction-ltr={feature.imagePosition === 'right'}
           >
             <p 
@@ -129,5 +129,9 @@
       animation: none !important;
       transition: none !important;
     }
+  }
+
+  .grid {
+    margin: 2rem 0 !important;
   }
 </style>
