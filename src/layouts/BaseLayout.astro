@@ -9,14 +9,16 @@ export let metaDescription = "";
 
 <html lang="fr">
   <head>
-      <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={t("meta.description", locale)} />
+    <!-- Preload -->
     <link rel="preload" href="/assets/fonts/Tomarik-Poster.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/assets/fonts/Salted_Regular.otf" as="font" type="font/opentype" crossorigin />
     <link rel="preload" as="image" href="/assets/images/hero-image.webp" type="image/webp" />
+    <link rel="preload" as="image" href="/assets/images/LogoMain.svg" type="image/svg+xml" />
   </head>
   <body>
     <slot />

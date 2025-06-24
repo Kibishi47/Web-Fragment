@@ -1,5 +1,4 @@
 <script>
-  import { onMount } from 'svelte';
   import CustomButton from 'components/CustomButton.svelte';
   import { t } from '../i18n/translations.js';
 
@@ -12,20 +11,6 @@
   export let buttonText = '';
   export let buttonLink = '#features';
   export let showButton = true;
-
-  let showVideo = false;
-  let removeImage = false;
-
-  onMount(() => {
-    // Affiche la vidéo après le rendu initial
-    setTimeout(() => {
-      showVideo = true;
-      // Supprime l'image une fois la vidéo visible (LCP déjà mesuré)
-      setTimeout(() => {
-        removeImage = true;
-      }, 500); // délai pour laisser le temps à la transition éventuelle
-    }, 50); // petit délai pour laisser l’image s'afficher rapidement
-  });
 </script>
 
 <section
@@ -34,41 +19,39 @@
 >
   <!-- Media container -->
   <div class="absolute inset-0 z-10">
-    <!-- Image visible au chargement, retirée après -->
-    {#if !removeImage}
-      <img
-        src={fallbackImageUrl}
-        alt={t('hero.video_alt', locale)}
-        class="w-full h-full object-cover object-center absolute inset-0 z-10"
-      />
-    {/if}
+    <!-- Fallback image : servira potentiellement de LCP -->
+    <img
+      src={fallbackImageUrl}
+      alt={t('hero.video_alt', locale)}
+      class="w-full h-full object-cover object-center absolute inset-0 z-0"
+    />
 
-    <!-- Vidéo chargée ensuite -->
-    {#if showVideo}
-      <video
-        autoplay
-        loop
-        muted
-        playsinline
-        class="w-full h-full object-cover object-center absolute inset-0 z-10"
-      >
-        <source src={videoUrl} type="video/webm" />
-      </video>
-    {/if}
+    <!-- Vidéo : chargée immédiatement, sans cacher l’image -->
+    <video
+      autoplay
+      loop
+      muted
+      playsinline
+      class="w-full h-full object-cover object-center absolute inset-0 z-10"
+    >
+      <source src={videoUrl} type="video/webm" />
+    </video>
 
-    <!-- Overlay foncé -->
+    <!-- Overlay -->
     <div
       class="absolute inset-0 bg-black z-20 pointer-events-none"
       style="opacity: {overlayOpacity};"
     ></div>
   </div>
 
-  <!-- Contenu centré -->
+  <!-- Contenu -->
   <div class="relative z-30 flex flex-col items-center justify-center gap-10">
     <img
       src="/assets/images/LogoMain.svg"
       alt="Spinback logo"
       class="lg:w-120 w-80 h-auto mb-8"
+      fetchpriority="low"
+      loading="eager"
     />
 
     {#if showButton}

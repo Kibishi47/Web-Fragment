@@ -1,7 +1,6 @@
 <script>
   import CustomButton from "./CustomButton.svelte";
-  import ThemeToggle from "./ThemeToggle.svelte";
-  import { t } from '../i18n/translations.js'
+  import { t } from '../i18n/translations.js';
 
   export let locale = 'fr';
   export let links = [];
