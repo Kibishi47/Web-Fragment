@@ -1,5 +1,5 @@
 <script>
-
+  import { onMount } from "svelte";
   import CustomButton from "components/CustomButton.svelte";
   import { t } from "../i18n/translations.js";
 
@@ -12,6 +12,15 @@
   export let buttonText = "";
   export let buttonLink = "#features";
   export let showButton = true;
+
+  let showVideo = false;
+
+  onMount(() => {
+    // Attend que la page soit montée, puis active la vidéo après un court délai
+    setTimeout(() => {
+      showVideo = true;
+    }, 300); // vous pouvez ajuster ce délai selon vos tests
+  });
 </script>
 
 <section
@@ -20,25 +29,31 @@
 >
   <!-- Media Container -->
   <div class="absolute inset-0 z-10">
-    <video
-      autoplay
-      loop
-      muted
-      playsinline
-      class="w-full h-full object-cover object-center"
-      poster={fallbackImageUrl}
-    >
-      <source src={videoUrl} type="video/mp4" />
-      <img
-        src={fallbackImageUrl}
-        alt={t("hero.video_alt", locale)}
-        class="w-full h-full object-cover object-center"
-      />
-    </video>
+    <!-- Image fallback rapide et optimisée -->
+    <img
+      src={fallbackImageUrl}
+      alt={t("hero.video_alt", locale)}
+      class="w-full h-full object-cover object-center absolute inset-0 z-10 transition-opacity duration-700"
+      style="opacity: {showVideo ? 0 : 1};"
+    />
+
+    <!-- Lazy-loaded video uniquement après initial render -->
+    {#if showVideo}
+      <video
+        autoplay
+        muted
+        playsinline
+        loop
+        class="w-full h-full object-cover object-center absolute inset-0 z-10 transition-opacity duration-700"
+        style="opacity: 1;"
+      >
+        <source src={videoUrl} type="video/webm" />
+      </video>
+    {/if}
 
     <!-- Overlay -->
     <div
-      class="absolute inset-0 bg-black z-20"
+      class="absolute inset-0 bg-black z-20 pointer-events-none"
       style="opacity: {overlayOpacity};"
     ></div>
   </div>
